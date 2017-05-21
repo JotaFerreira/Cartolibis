@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Cartomitos</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_esquema">Selecione um Esquema</string>
+
+    <string-array name="esquemas">
+        <item>3-4-3</item>
+        <item>3-5-2</item>
+        <item>4-3-3</item>
+        <item>4-4-2</item>
+        <item>4-5-1</item>
+        <item>5-3-2</item>
+        <item>5-4-1</item>
+    </string-array>
+
+</resources>
