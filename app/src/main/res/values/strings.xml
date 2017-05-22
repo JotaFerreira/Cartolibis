@@ -16,5 +16,6 @@
         <item>5-3-2</item>
         <item>5-4-1</item>
     </string-array>
+    <string name="title_activity_escalacao">EscalacaoActivity</string>
 
 </resources>

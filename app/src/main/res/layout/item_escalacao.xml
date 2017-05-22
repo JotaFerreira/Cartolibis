@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dbitem_selector"
+    android:orientation="horizontal"
+    android:padding="5dip">
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:padding="3dip">
+        <ImageView
+            android:id="@+id/db_icon"
+            android:paddingTop="10dip"
+            android:layout_width="70dip"
+            android:layout_height="70dip"
+            android:src="@drawable/emptystate_jogador"/>
+    </LinearLayout>
+    <!--<ImageView
+        android:id="@+id/arrow"
+        android:layout_width="15dip"
+        android:layout_height="15dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/db_fa_caret_right" />-->
+    <TextView
+        android:id="@+id/db_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="75dip"
+        android:layout_toRightOf="@id/db_icon"
+        android:paddingBottom="15dip"
+        android:text="Jogador"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+    <TextView
+        android:id="@+id/db_texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/db_titulo"
+        android:layout_below="@id/db_titulo"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="3dip"
+        android:text="Detalhes"
+        android:textColor="#343434"
+        android:textSize="13sp" />
+</RelativeLayout>

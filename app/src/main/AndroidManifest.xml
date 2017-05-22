@@ -22,6 +22,10 @@
         <activity
             android:name=".EsquemaActivity"
             android:label="@string/title_activity_esquema"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EscalacaoActivity"
+            android:label="@string/title_activity_escalacao"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
