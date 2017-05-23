@@ -8,9 +8,4 @@
     tools:context="club.cartoleirosfutebol.cartomitos.DashboardActivity"
     tools:showIn="@layout/app_bar_dashboard">
 
-    <info.androidhive.listviewfeed.FeedImageView
-        android:id="@+id/feedImage1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
 </android.support.constraint.ConstraintLayout>

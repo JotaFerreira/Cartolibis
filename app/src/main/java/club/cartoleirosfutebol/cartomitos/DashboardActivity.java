@@ -76,9 +76,9 @@ public class DashboardActivity extends AppCompatActivity
 
         // These two lines not needed,
         // just to get the look of facebook (changing background color & hiding the icon)
-        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
+ /*       getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
         getActionBar().setIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+                new ColorDrawable(getResources().getColor(android.R.color.transparent)));*/
 
         // We first check for cached request
         Cache cache = AppController.getInstance().getRequestQueue().getCache();
