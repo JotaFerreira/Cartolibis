@@ -8,6 +8,17 @@
     tools:context="club.cartoleirosfutebol.cartomitos.EscalacaoActivity"
     tools:showIn="@layout/activity_escalacao">
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#f4f4f4" >
 
+        <ExpandableListView
+            android:id="@+id/lvExp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
