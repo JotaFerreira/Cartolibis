@@ -1,4 +1,4 @@
-package club.cartoleirosfutebol.cartomitos.Adapters;
+package club.cartoleirosfutebol.cartomitos.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;

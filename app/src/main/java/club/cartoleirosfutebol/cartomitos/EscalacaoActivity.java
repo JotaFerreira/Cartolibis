@@ -1,21 +1,17 @@
 package club.cartoleirosfutebol.cartomitos;
 
 import android.os.Bundle;
-import android.os.Debug;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import club.cartoleirosfutebol.cartomitos.Adapters.ExpandableListAdapter;
+import club.cartoleirosfutebol.cartomitos.adapters.ExpandableListAdapter;
 
 public class EscalacaoActivity extends AppCompatActivity {
 
