@@ -26,7 +26,7 @@
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/sendButton"
+        android:id="@+id/btnJogador"
         android:src="@drawable/ic_next"
         android:scaleType="fitXY"
         android:padding="13dp"
@@ -42,7 +42,7 @@
         android:layout_alignParentTop="false"
         android:layout_centerVertical="true"
         android:layout_marginLeft="75dip"
-        android:layout_toRightOf="@id/db_icon"
+        android:layout_alignRight="@id/db_icon"
         android:focusable="false"
         android:paddingBottom="15dip"
         android:text="Jogador"
@@ -54,43 +54,39 @@
         android:id="@+id/db_pos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRightOf="@id/db_jog"
+        android:layout_alignLeft="@id/db_jog"
+        android:layout_below="@id/db_jog"
         android:layout_centerHorizontal="true"
-        android:focusable="false"
-        android:layout_centerVertical="true"
-        android:text="Pos: ATA"
+        android:paddingTop="3dip"
+        android:text="Atacante"
         android:textColor="#343434"
         android:textSize="@dimen/db_estatisticas_font" />
 
-   <!-- <TextView
+    <TextView
         android:id="@+id/db_med"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/btnJogador"
+        android:layout_centerVertical="true"
+        android:paddingRight="50dip"
+        android:paddingBottom="15dip"
         android:focusable="false"
-        android:paddingTop="7dip"
-        android:paddingLeft="5dip"
         android:text="Méd: 0.00"
         android:textColor="#343434"
-        android:textSize="@dimen/db_estatisticas_font"
-        android:layout_alignBaseline="@+id/db_pos"
-        android:layout_alignBottom="@+id/db_pos"
-        android:layout_toRightOf="@+id/db_pos"
-        android:layout_toEndOf="@+id/db_pos" />
+        android:textSize="@dimen/db_estatisticas_font" />
 
     <TextView
         android:id="@+id/db_ult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/btnJogador"
+        android:layout_below="@id/db_med"
+        android:paddingRight="50dip"
         android:focusable="false"
-        android:paddingTop="7dip"
-        android:paddingLeft="5dip"
-        android:text="Últ: 0.00"
+        android:paddingTop="3dip"
+        android:text="Últ: 20.00"
         android:textColor="#343434"
-        android:textSize="@dimen/db_estatisticas_font"
-        android:layout_alignBaseline="@+id/db_med"
-        android:layout_alignBottom="@+id/db_med"
-        android:layout_toRightOf="@+id/db_med"
-        android:layout_toEndOf="@+id/db_med" />
+        android:textSize="@dimen/db_estatisticas_font" />
 
     <TextView
         android:id="@+id/db_pre"
@@ -100,26 +96,28 @@
         android:paddingTop="7dip"
         android:paddingLeft="5dip"
         android:text="C$: 25,00"
+        android:textStyle="bold"
         android:textColor="#343434"
         android:textSize="@dimen/db_estatisticas_font"
-        android:layout_alignBaseline="@+id/db_ult"
-        android:layout_alignBottom="@+id/db_ult"
-        android:layout_toRightOf="@+id/db_ult"
-        android:layout_toEndOf="@+id/db_ult" />
+        android:layout_alignBaseline="@+id/db_pos"
+        android:layout_alignBottom="@+id/db_pos"
+        android:layout_toRightOf="@+id/db_pos"
+        android:layout_toEndOf="@+id/db_pos" />
 
     <TextView
-        android:id="@+id/db_par"
+        android:id="@+id/db_val"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="false"
         android:paddingTop="7dip"
         android:paddingLeft="5dip"
-        android:text="Jogos: 0"
-        android:textColor="#343434"
+        android:text="C$: +5,00"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/db_estatisticas_font"
         android:layout_alignBaseline="@+id/db_pre"
         android:layout_alignBottom="@+id/db_pre"
         android:layout_toRightOf="@+id/db_pre"
-        android:layout_toEndOf="@+id/db_pre" />-->
+        android:layout_toEndOf="@+id/db_pre" />
 
 </RelativeLayout>
