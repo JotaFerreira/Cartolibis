@@ -26,6 +26,8 @@ public class EscalacaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_escalacao);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -105,11 +107,11 @@ public class EscalacaoActivity extends AppCompatActivity {
         // Adding child data
         listDataHeader.add("Drogba");
         listDataHeader.add("Estádio do Vasco");
-        listDataHeader.add("R. Gaúcho");
+        listDataHeader.add("Gatito Fernandez");
         listDataHeader.add("Borja");
-        listDataHeader.add("Jô");
+        listDataHeader.add("Vladmir Fernandez");
         listDataHeader.add("Ricardo Oliveira");
-        listDataHeader.add("Pratto");
+        listDataHeader.add("Wellington Paulista");
 
         // Adding child data
         List<String> top250 = new ArrayList<String>();
