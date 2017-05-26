@@ -16,7 +16,7 @@
         android:padding="3dip">
         <ImageView
             android:id="@+id/db_escudo"
-            android:paddingTop="10dip"
+            android:paddingTop="8dip"
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:focusable="false"
@@ -27,7 +27,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/btnJogador"
-        android:src="@drawable/ic_plus"
+        android:src="@drawable/ic_minus"
         android:scaleType="fitXY"
         android:padding="10dp"
         android:focusable="false"
@@ -40,11 +40,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="false"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="75dip"
         android:layout_alignRight="@id/db_escudo"
         android:focusable="false"
-        android:paddingBottom="15dip"
+        android:paddingTop="10dp"
         android:text="Jogador"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
@@ -55,23 +54,20 @@
         android:id="@+id/db_status"
         android:layout_width="20dip"
         android:layout_height="30dip"
-        android:layout_alignBaseline="@+id/db_jog"
-        android:layout_alignBottom="@+id/db_jog"
         android:layout_alignParentTop="false"
-        android:layout_centerVertical="true"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dip"
         android:layout_toEndOf="@+id/db_jog"
         android:layout_toRightOf="@+id/db_jog"
         android:focusable="false"
-        android:paddingBottom="17dip"
         android:src="@drawable/ic_provavel" />
 
     <ImageView
         android:id="@+id/db_mandante"
         android:layout_width="20dip"
         android:layout_height="30dip"
-        android:layout_centerVertical="true"
-        android:layout_alignParentTop="false"
-        android:paddingBottom="17dip"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
         android:focusable="false"
         android:layout_alignBaseline="@+id/db_status"
         android:layout_alignBottom="@+id/db_status"
@@ -83,13 +79,12 @@
         android:id="@+id/db_versus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
         android:layout_alignBaseline="@+id/db_mandante"
-        android:layout_alignParentTop="false"
-        android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/db_mandante"
         android:layout_toRightOf="@+id/db_mandante"
         android:focusable="false"
-        android:paddingBottom="17dip"
         android:text="x"
         android:textSize="10dp" />
 
@@ -97,12 +92,11 @@
         android:id="@+id/db_visitante"
         android:layout_width="20dip"
         android:layout_height="30dip"
-        android:layout_centerVertical="true"
-        android:layout_alignParentTop="false"
-        android:paddingBottom="17dip"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
         android:focusable="false"
-        android:layout_alignBaseline="@+id/db_versus"
-        android:layout_alignBottom="@+id/db_versus"
+        android:layout_alignBaseline="@+id/db_mandante"
+        android:layout_alignBottom="@+id/db_mandante"
         android:layout_toRightOf="@+id/db_versus"
         android:layout_toEndOf="@+id/db_versus"
         android:src="@drawable/ic_visitante"/>
@@ -116,32 +110,6 @@
         android:layout_centerHorizontal="true"
         android:paddingTop="3dip"
         android:text="Atacante"
-        android:textColor="#343434"
-        android:textSize="@dimen/db_estatisticas_font" />
-
-    <TextView
-        android:id="@+id/db_med"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnJogador"
-        android:layout_centerVertical="true"
-        android:paddingRight="50dip"
-        android:paddingBottom="15dip"
-        android:focusable="false"
-        android:text="Méd: 0.00"
-        android:textColor="#343434"
-        android:textSize="@dimen/db_estatisticas_font" />
-
-    <TextView
-        android:id="@+id/db_ult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnJogador"
-        android:layout_below="@id/db_med"
-        android:paddingRight="50dip"
-        android:focusable="false"
-        android:paddingTop="3dip"
-        android:text="Últ: 20.00"
         android:textColor="#343434"
         android:textSize="@dimen/db_estatisticas_font" />
 
@@ -176,5 +144,33 @@
         android:layout_alignBottom="@+id/db_pre"
         android:layout_toRightOf="@+id/db_pre"
         android:layout_toEndOf="@+id/db_pre" />
+
+    <TextView
+        android:id="@+id/db_med"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/db_jog"
+        android:layout_below="@id/db_pos"
+        android:paddingTop="2dp"
+        android:focusable="false"
+        android:text="Méd: 0.00"
+        android:textColor="#343434"
+        android:textSize="@dimen/db_estatisticas_font" />
+
+    <TextView
+        android:id="@+id/db_ult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="50dip"
+        android:focusable="false"
+        android:paddingTop="3dip"
+        android:paddingLeft="5dip"
+        android:text="Últ: 20.00"
+        android:textColor="#343434"
+        android:textSize="@dimen/db_estatisticas_font"
+        android:layout_alignBaseline="@+id/db_med"
+        android:layout_alignBottom="@+id/db_med"
+        android:layout_toRightOf="@+id/db_med"
+        android:layout_toEndOf="@+id/db_med"/>
 
 </RelativeLayout>
