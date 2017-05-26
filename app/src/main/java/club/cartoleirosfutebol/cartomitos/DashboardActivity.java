@@ -49,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
+    private String URL_FEED = "http://cartoleirosfutebol.club/js/feed.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,14 +20,14 @@
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:focusable="false"
-            android:src="@drawable/ic_mandante"/>
+            android:src="@drawable/ic_escudo"/>
     </LinearLayout>
 
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/btnJogador"
-        android:src="@drawable/ic_next"
+        android:src="@drawable/ic_plus"
         android:scaleType="fitXY"
         android:padding="10dp"
         android:focusable="false"
@@ -45,7 +45,7 @@
         android:layout_alignRight="@id/db_escudo"
         android:focusable="false"
         android:paddingBottom="15dip"
-        android:text="Alejandro Guerra"
+        android:text="Jogador"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -61,10 +61,8 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/db_jog"
         android:layout_toRightOf="@+id/db_jog"
-        android:adjustViewBounds="true"
         android:focusable="false"
         android:paddingBottom="17dip"
-        android:scaleType="fitCenter"
         android:src="@drawable/ic_provavel" />
 
     <ImageView
@@ -75,10 +73,10 @@
         android:layout_alignParentTop="false"
         android:paddingBottom="17dip"
         android:focusable="false"
-        android:layout_alignBaseline="@+id/db_jog"
-        android:layout_alignBottom="@+id/db_jog"
-        android:layout_toRightOf="@+id/db_jog"
-        android:layout_toEndOf="@+id/db_jog"
+        android:layout_alignBaseline="@+id/db_status"
+        android:layout_alignBottom="@+id/db_status"
+        android:layout_toRightOf="@+id/db_status"
+        android:layout_toEndOf="@+id/db_status"
         android:src="@drawable/ic_mandante"/>
 
     <TextView
