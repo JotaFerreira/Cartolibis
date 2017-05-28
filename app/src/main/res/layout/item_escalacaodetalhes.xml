@@ -8,8 +8,9 @@
         android:id="@+id/lblListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
+        android:textSize="13dip"
         android:paddingTop="5dp"
+        android:textStyle="bold"
         android:paddingBottom="5dp"
         android:paddingLeft="@dimen/ms__padding_left" />
 

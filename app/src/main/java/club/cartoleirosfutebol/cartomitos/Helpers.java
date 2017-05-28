@@ -17,4 +17,9 @@ public class Helpers {
         editor.commit();
     }
 
+    public static String GetStringSharedPreference(Context context, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(key,null);
+    }
+
 }

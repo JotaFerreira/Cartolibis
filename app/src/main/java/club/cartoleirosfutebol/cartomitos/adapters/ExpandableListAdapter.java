@@ -1,17 +1,23 @@
 package club.cartoleirosfutebol.cartomitos.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
 
+import club.cartoleirosfutebol.cartomitos.EscalacaoActivity;
+import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
+import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
 
 /**
  * Created by JP on 21/05/2017.
@@ -20,12 +26,12 @@ import club.cartoleirosfutebol.cartomitos.R;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private List<JogadorItem> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<JogadorItem, List<String>> _listDataChild;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+    public ExpandableListAdapter(Context context, List<JogadorItem> listDataHeader,
+                                 HashMap<JogadorItem, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -85,17 +91,59 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        final JogadorItem jogador = (JogadorItem) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_escalacao, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.db_jog);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
+        TextView lblNome = (TextView) convertView.findViewById(R.id.db_jog);
+        TextView lblPosicao = (TextView) convertView.findViewById(R.id.db_pos);
+        TextView lblUltima = (TextView) convertView.findViewById(R.id.db_ult);
+        TextView lblMedia = (TextView) convertView.findViewById(R.id.db_med);
+        TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
+        ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
+
+        if(jogador.getNome().equals("")){
+            lblUltima.setVisibility(View.GONE);
+        } else {
+            lblNome.setVisibility(View.VISIBLE);
+            lblNome.setText(jogador.getNome());
+        }
+
+        if(jogador.getPosicao().equals("")){
+            lblPosicao.setVisibility(View.GONE);
+        } else {
+            lblPosicao.setVisibility(View.VISIBLE);
+            lblPosicao.setText(jogador.getPosicao());
+        }
+
+        btnJogador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(_context, MercadoActivity.class);
+                intent.putExtra("filtro",jogador.getPosicao());
+                _context.startActivity(intent);
+                Log.i("ONCLICK",jogador.getPosicao());
+            }
+        });
+
+        /*if(jogador.getUltima() == 0){
+            lblUltima.setVisibility(View.GONE);
+        } else {
+            lblUltima.setVisibility(View.VISIBLE);
+            lblUltima.setText("Últ: " + jogador.getUltima());
+        }
+
+        if(jogador.getMedia() == 0){
+            lblMedia.setVisibility(View.GONE);
+        } else {
+            lblMedia.setVisibility(View.VISIBLE);
+            lblMedia.setText("Méd: " + jogador.getMedia());
+        }*/
+
+        //lblPreco.setText("C$: " + jogador.getPreco());
 
         return convertView;
     }

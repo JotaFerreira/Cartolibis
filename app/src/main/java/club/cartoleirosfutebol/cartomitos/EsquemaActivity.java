@@ -32,6 +32,7 @@ public class EsquemaActivity extends AppCompatActivity {
         MaterialSpinner esquemasSpinner = (MaterialSpinner) findViewById(R.id.spinner);
         final String[] esquemas = getResources().getStringArray(R.array.esquemas);
         esquemasSpinner.setItems(esquemas);
+        Helpers.PutSharedPreference(EsquemaActivity.this,"user_scheme","3-4-3"); // esquema padrão
 
         esquemasSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
@@ -68,6 +69,7 @@ public class EsquemaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EsquemaActivity.this, EscalacaoActivity.class);
+                intent.putExtra("esquema_user",Helpers.GetStringSharedPreference(EsquemaActivity.this,"user_scheme"));
                 startActivity(intent);
             }
         });
