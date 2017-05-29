@@ -1,13 +1,14 @@
 package club.cartoleirosfutebol.cartomitos.data;
 
-/**
- * Created by JP on 24/05/2017.
- */
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Posicoes {
+/**
+ * Created by joao.oliveira on 29/05/2017.
+ */
+
+public class PosicaoEsquema {
+
     @SerializedName("ata")
     @Expose
     private Integer ata;
@@ -74,4 +75,5 @@ public class Posicoes {
     public void setZag(Integer zag) {
         this.zag = zag;
     }
+
 }

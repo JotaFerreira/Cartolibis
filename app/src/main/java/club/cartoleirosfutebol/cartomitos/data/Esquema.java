@@ -16,7 +16,7 @@ public class Esquema {
     private String nome;
     @SerializedName("posicoes")
     @Expose
-    private Posicoes posicoes;
+    private PosicaoEsquema posicoes;
 
     public Integer getEsquemaId() {
         return esquemaId;
@@ -34,11 +34,11 @@ public class Esquema {
         this.nome = nome;
     }
 
-    public Posicoes getPosicoes() {
+    public PosicaoEsquema getPosicoes() {
         return posicoes;
     }
 
-    public void setPosicoes(Posicoes posicoes) {
+    public void setPosicoes(PosicaoEsquema posicoes) {
         this.posicoes = posicoes;
     }
 }

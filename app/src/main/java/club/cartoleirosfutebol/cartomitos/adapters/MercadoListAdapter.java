@@ -2,6 +2,7 @@ package club.cartoleirosfutebol.cartomitos.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,29 +10,36 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import club.cartoleirosfutebol.cartomitos.EscalacaoActivity;
 import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
+import club.cartoleirosfutebol.cartomitos.data.Atleta;
+import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Posicao;
+import club.cartoleirosfutebol.cartomitos.data.PosicaoEsquema;
 
 /**
- * Created by JP on 21/05/2017.
+ * Created by joao.oliveira on 29/05/2017.
  */
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class MercadoListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<JogadorItem> _listDataHeader; // header titles
+    private List<Atleta> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<JogadorItem, List<String>> _listDataChild;
+    private HashMap<Atleta, List<String>> _listDataChild;
 
-    public ExpandableListAdapter(Context context, List<JogadorItem> listDataHeader,
-                                 HashMap<JogadorItem, List<String>> listChildData) {
+    public MercadoListAdapter(Context context, List<Atleta> listDataHeader,
+                                 HashMap<Atleta, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -91,7 +99,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        final JogadorItem jogador = (JogadorItem) getGroup(groupPosition);
+        final Atleta jogador = (Atleta) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -105,21 +113,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
-        if(jogador.getNome().equals("")){
+        String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
+        Type listEsquemaType = new TypeToken<ArrayList<Posicao>>(){}.getType();
+        List<Posicao> posicoes = new Gson().fromJson(posicoesEsquemaJson,listEsquemaType);
+
+        if(jogador.getApelido() == null){
             lblUltima.setVisibility(View.GONE);
         } else {
             lblNome.setVisibility(View.VISIBLE);
-            lblNome.setText(jogador.getNome());
+            lblNome.setText(jogador.getApelido());
         }
 
-        if(jogador.getPosicao().equals("")){
+        if(jogador.getPosicaoId() == null){
             lblPosicao.setVisibility(View.GONE);
         } else {
             lblPosicao.setVisibility(View.VISIBLE);
-            lblPosicao.setText(jogador.getPosicao());
+            String posicaoNome = "";
+
+            for(Posicao p : posicoes){
+
+                if(jogador.getPosicaoId() == p.getId()){
+                    posicaoNome = p.getNome();
+                    break;
+                }
+
+            }
+            lblPosicao.setText(posicaoNome);
         }
 
-        btnJogador.setOnClickListener(new View.OnClickListener() {
+ /*       btnJogador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(_context, MercadoActivity.class);
@@ -127,7 +149,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 _context.startActivity(intent);
                 Log.i("ONCLICK",jogador.getPosicao());
             }
-        });
+        });*/
 
         /*if(jogador.getUltima() == 0){
             lblUltima.setVisibility(View.GONE);
@@ -157,6 +179,5 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 
 }

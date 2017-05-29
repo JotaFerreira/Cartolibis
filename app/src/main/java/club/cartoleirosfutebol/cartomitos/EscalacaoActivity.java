@@ -17,16 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.lang.reflect.Type;
 
-import club.cartoleirosfutebol.cartomitos.adapters.ExpandableListAdapter;
+import club.cartoleirosfutebol.cartomitos.adapters.EscalacaoListAdapter;
+import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
 
 public class EscalacaoActivity extends AppCompatActivity {
 
-    ExpandableListAdapter listAdapter;
+    EscalacaoListAdapter listAdapter;
     ExpandableListView expListView;
-    List<JogadorItem> listDataHeader;
-    HashMap<JogadorItem, List<String>> listDataChild;
+    List<Atleta> listDataHeader;
+    HashMap<Atleta, List<String>> listDataChild;
     List<Esquema> esquemas;
     Esquema esquemaUser;
     String esquemaIntent;
@@ -47,7 +48,7 @@ public class EscalacaoActivity extends AppCompatActivity {
         esquemaIntent = intent.getStringExtra("esquema_user");
         prepareListData(esquemaIntent);
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new EscalacaoListAdapter(this, listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
@@ -127,8 +128,8 @@ public class EscalacaoActivity extends AppCompatActivity {
 
     private void prepareListData(String esquema) {
 
-        listDataHeader = new ArrayList<JogadorItem>();
-        listDataChild = new HashMap<JogadorItem, List<String>>();
+        listDataHeader = new ArrayList<Atleta>();
+        listDataChild = new HashMap<Atleta, List<String>>();
 
         String esquemasJson = getResources().getString(R.string.esquemas_json);
         Type listEsquemaType = new TypeToken<ArrayList<Esquema>>(){}.getType();
@@ -147,42 +148,42 @@ public class EscalacaoActivity extends AppCompatActivity {
             int meias = esquemaPosicao.getPosicoes().getMei();
             int atacantes = esquemaPosicao.getPosicoes().getAta();
 
-            JogadorItem jGol = new JogadorItem();
+            Atleta jGol = new Atleta();
             jGol.setNome("Jogador");
-            jGol.setPosicao("Goleiro");
+            jGol.setPosicaoId(1);
             listDataHeader.add(jGol);
 
             for(int i = 0; i < zagueiros; i++){
-                JogadorItem j = new JogadorItem();
+                Atleta j = new Atleta();
                 j.setNome("Jogador");
-                j.setPosicao("Zagueiro");
+                j.setPosicaoId(3);
                 listDataHeader.add(j);
             }
 
             for(int i = 0; i < laterais; i++){
-                JogadorItem j = new JogadorItem();
+                Atleta j = new Atleta();
                 j.setNome("Jogador");
-                j.setPosicao("Lateral");
+                j.setPosicaoId(2);
                 listDataHeader.add(j);
             }
 
             for(int i = 0; i < meias; i++){
-                JogadorItem j = new JogadorItem();
+                Atleta j = new Atleta();
                 j.setNome("Jogador");
-                j.setPosicao("Meia");
+                j.setPosicaoId(4);
                 listDataHeader.add(j);
             }
 
             for(int i = 0; i < atacantes; i++){
-                JogadorItem j = new JogadorItem();
+                Atleta j = new Atleta();
                 j.setNome("Jogador");
-                j.setPosicao("Atacante");
+                j.setPosicaoId(5);
                 listDataHeader.add(j);
             }
 
-            JogadorItem jTec = new JogadorItem();
-            jTec.setNome("Jogador");
-            jTec.setPosicao("Técnico");
+            Atleta jTec = new Atleta();
+            jTec.setNome("Técnico");
+            jTec.setPosicaoId(6);
             listDataHeader.add(jTec);
 
         }

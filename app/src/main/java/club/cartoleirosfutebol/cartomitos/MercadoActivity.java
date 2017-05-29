@@ -9,12 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
 import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
@@ -30,6 +34,9 @@ public class MercadoActivity extends AppCompatActivity {
 
     private String _filtro;
     private final String TAG = "MercadoActivity";
+    MercadoListAdapter mercadoListAdapter;
+    HashMap<Atleta, List<String>> listDataScout;
+    ExpandableListView expListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class MercadoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        expListView = (ExpandableListView) findViewById(R.id.lvExpMercado);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +71,30 @@ public class MercadoActivity extends AppCompatActivity {
                         Mercado mercado = response.body();
 
                         if(mercado != null){
-                            
+
+                            if(mercado.getAtletas() != null){
+
+                                listDataScout = new HashMap<Atleta, List<String>>();
+
+                                List<String> scouts = new ArrayList<String>();
+                                scouts.add("Gol");
+                                scouts.add("Assistência");
+                                scouts.add("Finalização");
+                                scouts.add("Finalização Defendida");
+                                scouts.add("Finalização Pra Fora");
+                                scouts.add("Falta Sofrida");
+
+                                for(Atleta a : mercado.getAtletas()){
+
+                                    listDataScout.put(a,scouts);
+
+                                }
+
+                                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this,mercado.getAtletas(),listDataScout);
+                                expListView.setAdapter(mercadoListAdapter);
+
+                            }
+
                         }
 
                     }
