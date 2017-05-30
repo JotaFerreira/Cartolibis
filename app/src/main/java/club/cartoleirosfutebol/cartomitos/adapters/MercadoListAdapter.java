@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
 import club.cartoleirosfutebol.cartomitos.data.Posicao;
 import club.cartoleirosfutebol.cartomitos.data.PosicaoEsquema;
+import club.cartoleirosfutebol.cartomitos.data.Status;
 
 /**
  * Created by joao.oliveira on 29/05/2017.
@@ -39,7 +41,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
     private HashMap<Atleta, List<String>> _listDataChild;
 
     public MercadoListAdapter(Context context, List<Atleta> listDataHeader,
-                                 HashMap<Atleta, List<String>> listChildData) {
+                              HashMap<Atleta, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -111,34 +113,68 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         TextView lblUltima = (TextView) convertView.findViewById(R.id.db_ult);
         TextView lblMedia = (TextView) convertView.findViewById(R.id.db_med);
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
+        ImageView imgStatus = (ImageView) convertView.findViewById(R.id.db_status);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
         String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
-        Type listEsquemaType = new TypeToken<ArrayList<Posicao>>(){}.getType();
-        List<Posicao> posicoes = new Gson().fromJson(posicoesEsquemaJson,listEsquemaType);
+        Type listEsquemaType = new TypeToken<ArrayList<Posicao>>() {
+        }.getType();
+        List<Posicao> posicoes = new Gson().fromJson(posicoesEsquemaJson, listEsquemaType);
 
-        if(jogador.getApelido() == null){
+        String statusJson = _context.getResources().getString(R.string.status_json);
+        Type listStatusType = new TypeToken<ArrayList<Status>>() {
+        }.getType();
+        List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
+
+        if (jogador.getApelido() == null) {
             lblUltima.setVisibility(View.GONE);
         } else {
             lblNome.setVisibility(View.VISIBLE);
             lblNome.setText(jogador.getApelido());
         }
 
-        if(jogador.getPosicaoId() == null){
+        if (jogador.getPosicaoId() == null) {
             lblPosicao.setVisibility(View.GONE);
         } else {
             lblPosicao.setVisibility(View.VISIBLE);
             String posicaoNome = "";
 
-            for(Posicao p : posicoes){
+            for (Posicao p : posicoes) {
 
-                if(jogador.getPosicaoId() == p.getId()){
+                if (jogador.getPosicaoId() == p.getId()) {
                     posicaoNome = p.getNome();
                     break;
                 }
 
             }
             lblPosicao.setText(posicaoNome);
+        }
+
+        if (jogador.getStatusId() == null) {
+            imgStatus.setVisibility(View.GONE);
+        } else {
+            imgStatus.setVisibility(View.VISIBLE);
+
+            switch (jogador.getStatusId()) {
+
+                case 7:
+                    imgStatus.setImageResource(R.drawable.ic_provavel);
+                    break;
+                case 5:
+                    imgStatus.setImageResource(R.drawable.ic_contudido);
+                    break;
+                case 2:
+                    imgStatus.setImageResource(R.drawable.ic_duvida);
+                    break;
+                case 3:
+                    imgStatus.setImageResource(R.drawable.ic_suspenso);
+                    break;
+                case 6:
+                    imgStatus.setVisibility(View.GONE);
+                    break;
+                default:
+                    imgStatus.setVisibility(View.GONE);
+            }
         }
 
  /*       btnJogador.setOnClickListener(new View.OnClickListener() {

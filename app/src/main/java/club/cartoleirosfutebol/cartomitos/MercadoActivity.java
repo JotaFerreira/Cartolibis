@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MercadoActivity extends AppCompatActivity {
 
-    private String _filtro;
+    private int _filtro;
     private final String TAG = "MercadoActivity";
     MercadoListAdapter mercadoListAdapter;
     HashMap<Atleta, List<String>> listDataScout;
@@ -44,7 +44,7 @@ public class MercadoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mercado);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Intent intent = getIntent();
-        _filtro = intent.getStringExtra("filtro");
+        _filtro = intent.getIntExtra("filtro", 0);
         toolbar.setTitle("Mercado - " + _filtro);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,7 +56,7 @@ public class MercadoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(Atleta.class,new AtletasDeserializer()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Atleta.class, new AtletasDeserializer()).create();
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(APIConstraints.API_CARTOLA_BASE)
                         .addConverterFactory(GsonConverterFactory.create())
@@ -70,11 +70,12 @@ public class MercadoActivity extends AppCompatActivity {
 
                         Mercado mercado = response.body();
 
-                        if(mercado != null){
+                        if (mercado != null) {
 
-                            if(mercado.getAtletas() != null){
+                            if (mercado.getAtletas() != null) {
 
                                 listDataScout = new HashMap<Atleta, List<String>>();
+                                List<Atleta> atletas = new ArrayList<Atleta>();
 
                                 List<String> scouts = new ArrayList<String>();
                                 scouts.add("Gol");
@@ -84,14 +85,18 @@ public class MercadoActivity extends AppCompatActivity {
                                 scouts.add("Finalização Pra Fora");
                                 scouts.add("Falta Sofrida");
 
-                                for(Atleta a : mercado.getAtletas()){
+                                if (_filtro != 0) {
 
-                                    listDataScout.put(a,scouts);
+                                    for (Atleta a : mercado.getAtletas()) {
+                                        if (a.getPosicaoId() == _filtro) {
+                                            atletas.add(a);
+                                            listDataScout.put(a, scouts);
+                                        }
+                                    }
 
+                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout);
+                                    expListView.setAdapter(mercadoListAdapter);
                                 }
-
-                                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this,mercado.getAtletas(),listDataScout);
-                                expListView.setAdapter(mercadoListAdapter);
 
                             }
 
@@ -101,7 +106,7 @@ public class MercadoActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Mercado> call, Throwable t) {
-                        Log.e(TAG,t.getMessage());
+                        Log.e(TAG, t.getMessage());
                     }
                 });
             }

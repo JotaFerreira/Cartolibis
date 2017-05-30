@@ -11,6 +11,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +24,7 @@ import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Posicao;
 
 /**
  * Created by JP on 21/05/2017.
@@ -106,6 +112,11 @@ public class EscalacaoListAdapter extends BaseExpandableListAdapter {
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
+        String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
+        Type listEsquemaType = new TypeToken<ArrayList<Posicao>>() {
+        }.getType();
+        List<Posicao> posicoes = new Gson().fromJson(posicoesEsquemaJson, listEsquemaType);
+
         if(jogador.getNome().equals("")){
             lblUltima.setVisibility(View.GONE);
         } else {
@@ -113,18 +124,28 @@ public class EscalacaoListAdapter extends BaseExpandableListAdapter {
             lblNome.setText(jogador.getNome());
         }
 
-        /*if(jogador.getPosicao().equals("")){
+        if(jogador.getPosicaoId() == null){
             lblPosicao.setVisibility(View.GONE);
         } else {
             lblPosicao.setVisibility(View.VISIBLE);
-            lblPosicao.setText(jogador.getPosicao());
-        }*/
+            String posicaoNome = "";
+
+            for (Posicao p : posicoes) {
+
+                if (jogador.getPosicaoId() == p.getId()) {
+                    posicaoNome = p.getNome();
+                    break;
+                }
+
+            }
+            lblPosicao.setText(posicaoNome);
+        }
 
         btnJogador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(_context, MercadoActivity.class);
-               // intent.putExtra("filtro",jogador.getPosicao());
+                intent.putExtra("filtro",jogador.getPosicaoId());
                 _context.startActivity(intent);
                // Log.i("ONCLICK",jogador.getPosicao());
             }
