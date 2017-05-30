@@ -2,9 +2,6 @@ package club.cartoleirosfutebol.cartomitos;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,25 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import club.cartoleirosfutebol.cartomitos.adapters.FeedListAdapter;
-import club.cartoleirosfutebol.cartomitos.app.AppController;
-import club.cartoleirosfutebol.cartomitos.data.FeedItem;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.Menu;
 import android.widget.ListView;
 
 import com.android.volley.Cache;
@@ -41,6 +19,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import club.cartoleirosfutebol.cartomitos.adapters.FeedListAdapter;
+import club.cartoleirosfutebol.cartomitos.app.AppController;
+import club.cartoleirosfutebol.cartomitos.data.FeedItem;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,12 +63,6 @@ public class DashboardActivity extends AppCompatActivity
 
         listAdapter = new FeedListAdapter(this, feedItems);
         listView.setAdapter(listAdapter);
-
-        // These two lines not needed,
-        // just to get the look of facebook (changing background color & hiding the icon)
- /*       getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3b5998")));
-        getActionBar().setIcon(
-                new ColorDrawable(getResources().getColor(android.R.color.transparent)));*/
 
         // We first check for cached request
         Cache cache = AppController.getInstance().getRequestQueue().getCache();

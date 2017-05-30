@@ -3,6 +3,7 @@ package club.cartoleirosfutebol.cartomitos.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +114,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         TextView lblUltima = (TextView) convertView.findViewById(R.id.db_ult);
         TextView lblMedia = (TextView) convertView.findViewById(R.id.db_med);
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
+        TextView lblValorizacao = (TextView) convertView.findViewById(R.id.db_val);
         ImageView imgStatus = (ImageView) convertView.findViewById(R.id.db_status);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
@@ -175,6 +177,44 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                 default:
                     imgStatus.setVisibility(View.GONE);
             }
+        }
+
+        if(jogador.getMediaNum() == null){
+            lblMedia.setVisibility(View.GONE);
+        } else {
+            lblMedia.setVisibility(View.VISIBLE);
+            lblMedia.setText("Média: " + jogador.getMediaNum());
+        }
+
+        if(jogador.getPontosNum() == null){
+            lblUltima.setVisibility(View.GONE);
+        } else {
+            lblUltima.setVisibility(View.VISIBLE);
+            lblUltima.setText("Última: " + jogador.getPontosNum());
+        }
+
+        if(jogador.getPrecoNum() == null){
+            lblPreco.setVisibility(View.GONE);
+        } else {
+            lblPreco.setVisibility(View.VISIBLE);
+            lblPreco.setText("C$: " + jogador.getPrecoNum());
+        }
+
+        if(jogador.getVariacaoNum() == null){
+            lblValorizacao.setVisibility(View.GONE);
+        } else {
+            String indicador = "";
+
+            if(jogador.getVariacaoNum() == 0){
+                lblValorizacao.setTextColor(Color.BLACK);
+            } else if(jogador.getVariacaoNum() > 0){
+                lblValorizacao.setTextColor(Color.GREEN);
+                indicador = "+";
+            } else {
+                lblValorizacao.setTextColor(Color.RED);
+            }
+            lblValorizacao.setVisibility(View.VISIBLE);
+            lblValorizacao.setText("C$: " + indicador + jogador.getVariacaoNum());
         }
 
  /*       btnJogador.setOnClickListener(new View.OnClickListener() {

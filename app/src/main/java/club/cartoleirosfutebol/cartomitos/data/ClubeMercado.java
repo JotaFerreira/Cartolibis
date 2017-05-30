@@ -7,13 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by JP on 28/05/2017.
+ * Created by joao.oliveira on 30/05/2017.
  */
 
-public class Mercado {
-    @SerializedName("atletas")
-    @Expose
-    private List<Atleta> atletas = null;
+public class ClubeMercado {
 
     @SerializedName("clubes")
     @Expose
@@ -26,13 +23,4 @@ public class Mercado {
     public void setClubes(Map<String,Clube> clubes) {
         this.clubes = clubes;
     }
-
-    public List<Atleta> getAtletas() {
-        return atletas;
-    }
-
-    public void setAtletas(List<Atleta> atletas) {
-        this.atletas = atletas;
-    }
-
 }

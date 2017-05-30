@@ -3,7 +3,6 @@ package club.cartoleirosfutebol.cartomitos;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,7 +22,7 @@ import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Mercado;
-import club.cartoleirosfutebol.cartomitos.util.AtletasDeserializer;
+import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,10 +55,10 @@ public class MercadoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(Atleta.class, new AtletasDeserializer()).create();
+                Gson gson = new GsonBuilder().registerTypeAdapter(Mercado.class, new MercadoDeserializer()).create();
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(APIConstraints.API_CARTOLA_BASE)
-                        .addConverterFactory(GsonConverterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create(gson))
                         .build();
                 AtletasAPI atletasAPI = retrofit.create(AtletasAPI.class);
                 Call<Mercado> call = atletasAPI.getMercado();
