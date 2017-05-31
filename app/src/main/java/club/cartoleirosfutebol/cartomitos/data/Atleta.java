@@ -162,4 +162,5 @@ public class Atleta {
     public void setScout(Scout scout) {
         this.scout = scout;
     }
+
 }

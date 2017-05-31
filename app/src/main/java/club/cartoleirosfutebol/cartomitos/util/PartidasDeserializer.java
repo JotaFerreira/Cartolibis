@@ -10,24 +10,27 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import club.cartoleirosfutebol.cartomitos.data.Mercado;
+import club.cartoleirosfutebol.cartomitos.data.Partida;
+import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 
 /**
- * Created by JP on 28/05/2017.
+ * Created by joao.oliveira on 31/05/2017.
  */
 
-public class MercadoDeserializer implements JsonDeserializer<Object> {
+public class PartidasDeserializer implements JsonDeserializer<Object> {
+
     @Override
     public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         // Get the "content" element from the parsed JSON
         try {
 
-            return new Gson().fromJson(json, Mercado.class);
+            return new Gson().fromJson(json, Partida.class);
 
         } catch (Exception e) {
-            Log.e("MercadoDeserializer: ", e.getMessage());
+            Log.e("PartidasDeserializer: ", e.getMessage());
             return null;
         }
 
     }
+
 }

@@ -29,6 +29,8 @@ import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Clube;
 import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Partida;
+import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.data.Posicao;
 import club.cartoleirosfutebol.cartomitos.data.PosicaoEsquema;
 import club.cartoleirosfutebol.cartomitos.data.Status;
@@ -42,14 +44,16 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<Atleta> _listDataHeader;
     private HashMap<Atleta, List<String>> _listDataChild;
-    private Map<String,Clube> _clubes;
+    private Map<String, Clube> _clubes;
+    PartidaClube _partidaClube;
 
     public MercadoListAdapter(Context context, List<Atleta> listDataHeader,
-                              HashMap<Atleta, List<String>> listChildData, Map<String,Clube> clubes) {
+                              HashMap<Atleta, List<String>> listChildData, Map<String, Clube> clubes, PartidaClube partidaClube) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._clubes = clubes;
+        this._partidaClube = partidaClube;
     }
 
     @Override
@@ -119,8 +123,12 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         TextView lblMedia = (TextView) convertView.findViewById(R.id.db_med);
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
         TextView lblValorizacao = (TextView) convertView.findViewById(R.id.db_val);
+        TextView lblJogos = (TextView) convertView.findViewById(R.id.db_par);
+        TextView lblVersus = (TextView) convertView.findViewById(R.id.db_versus);
         ImageView imgEscudo = (ImageView) convertView.findViewById(R.id.db_escudo);
         ImageView imgStatus = (ImageView) convertView.findViewById(R.id.db_status);
+        ImageView imgMandante = (ImageView) convertView.findViewById(R.id.db_mandante);
+        ImageView imgVisitante = (ImageView) convertView.findViewById(R.id.db_visitante);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
         String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
@@ -133,13 +141,25 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         }.getType();
         List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
 
-        if(_clubes == null || jogador.getClubeId() == null || jogador.getClubeId() == 0){
+        if (_clubes == null || jogador.getClubeId() == null || jogador.getClubeId() == 0) {
             imgEscudo.setImageResource(R.drawable.ic_escudo);
         } else {
-            for (Clube c : _clubes.values()){
-                if(c.getId().intValue() == jogador.getClubeId()){
-                    if(c.getEscudos() != null){
-                        if(c.getEscudos().get60x60() != null && !c.getEscudos().get60x60().equals("")){
+            for (Clube c : _clubes.values()) {
+
+                String urlImagemMandante = "";
+                String urlImagemVisitante = "";
+
+                if (_partidaClube != null && _partidaClube.getPartidas() != null) {
+                    for (Partida p : _partidaClube.getPartidas()) {
+                        if (p.getClubeCasaId().intValue() == c.getId().intValue()) {
+                            urlImagemMandante = c.getEscudos().get60x60();
+                        }
+                    }
+                }
+
+                if (c.getId().intValue() == jogador.getClubeId()) {
+                    if (c.getEscudos() != null) {
+                        if (c.getEscudos().get60x60() != null && !c.getEscudos().get60x60().equals("")) {
                             Glide.with(_context).load(c.getEscudos().get60x60()).into(imgEscudo);
                             break;
                         }
@@ -199,35 +219,42 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        if(jogador.getMediaNum() == null){
+        if (jogador.getMediaNum() == null) {
             lblMedia.setVisibility(View.GONE);
         } else {
             lblMedia.setVisibility(View.VISIBLE);
             lblMedia.setText("Média: " + jogador.getMediaNum());
         }
 
-        if(jogador.getPontosNum() == null){
+        if (jogador.getJogosNum() == null) {
+            lblJogos.setVisibility(View.GONE);
+        } else {
+            lblJogos.setVisibility(View.VISIBLE);
+            lblJogos.setText("Jogos: " + jogador.getJogosNum());
+        }
+
+        if (jogador.getPontosNum() == null) {
             lblUltima.setVisibility(View.GONE);
         } else {
             lblUltima.setVisibility(View.VISIBLE);
             lblUltima.setText("Última: " + jogador.getPontosNum());
         }
 
-        if(jogador.getPrecoNum() == null){
+        if (jogador.getPrecoNum() == null) {
             lblPreco.setVisibility(View.GONE);
         } else {
             lblPreco.setVisibility(View.VISIBLE);
             lblPreco.setText("C$: " + jogador.getPrecoNum());
         }
 
-        if(jogador.getVariacaoNum() == null){
+        if (jogador.getVariacaoNum() == null) {
             lblValorizacao.setVisibility(View.GONE);
         } else {
             String indicador = "";
 
-            if(jogador.getVariacaoNum() == 0){
+            if (jogador.getVariacaoNum() == 0) {
                 lblValorizacao.setTextColor(Color.BLACK);
-            } else if(jogador.getVariacaoNum() > 0){
+            } else if (jogador.getVariacaoNum() > 0) {
                 lblValorizacao.setTextColor(Color.GREEN);
                 indicador = "+";
             } else {
@@ -246,22 +273,6 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                 Log.i("ONCLICK",jogador.getPosicao());
             }
         });*/
-
-        /*if(jogador.getUltima() == 0){
-            lblUltima.setVisibility(View.GONE);
-        } else {
-            lblUltima.setVisibility(View.VISIBLE);
-            lblUltima.setText("Últ: " + jogador.getUltima());
-        }
-
-        if(jogador.getMedia() == 0){
-            lblMedia.setVisibility(View.GONE);
-        } else {
-            lblMedia.setVisibility(View.VISIBLE);
-            lblMedia.setText("Méd: " + jogador.getMedia());
-        }*/
-
-        //lblPreco.setText("C$: " + jogador.getPreco());
 
         return convertView;
     }

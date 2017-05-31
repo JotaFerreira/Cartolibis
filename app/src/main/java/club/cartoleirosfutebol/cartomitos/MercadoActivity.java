@@ -20,9 +20,13 @@ import java.util.List;
 import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
 import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
+import club.cartoleirosfutebol.cartomitos.api.PartidasAPI;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Mercado;
+import club.cartoleirosfutebol.cartomitos.data.Partida;
+import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
+import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +40,8 @@ public class MercadoActivity extends AppCompatActivity {
     MercadoListAdapter mercadoListAdapter;
     HashMap<Atleta, List<String>> listDataScout;
     ExpandableListView expListView;
+    Mercado _mercado;
+    PartidaClube _partidas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,34 +50,49 @@ public class MercadoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Intent intent = getIntent();
         _filtro = intent.getIntExtra("filtro", 0);
-        toolbar.setTitle("Mercado - " + _filtro);
+        toolbar.setTitle("Mercado");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         expListView = (ExpandableListView) findViewById(R.id.lvExpMercado);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Gson gsonMercado = new GsonBuilder().registerTypeAdapter(Mercado.class, new MercadoDeserializer()).create();
+        Retrofit retrofitAtletas = new Retrofit.Builder()
+                .baseUrl(APIConstraints.API_CARTOLA_BASE)
+                .addConverterFactory(GsonConverterFactory.create(gsonMercado))
+                .build();
+        AtletasAPI atletasAPI = retrofitAtletas.create(AtletasAPI.class);
+        Call<Mercado> callAtletas = atletasAPI.getMercado();
+
+        callAtletas.enqueue(new Callback<Mercado>() {
             @Override
-            public void onClick(View view) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(Mercado.class, new MercadoDeserializer()).create();
-                Retrofit retrofit = new Retrofit.Builder()
+            public void onResponse(Call<Mercado> call, Response<Mercado> response) {
+
+                _mercado = response.body();
+
+                Gson gsonPartidas = new GsonBuilder().registerTypeAdapter(Partida.class, new PartidasDeserializer()).create();
+                Retrofit retrofitPartidas = new Retrofit.Builder()
                         .baseUrl(APIConstraints.API_CARTOLA_BASE)
-                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .addConverterFactory(GsonConverterFactory.create(gsonPartidas))
                         .build();
-                AtletasAPI atletasAPI = retrofit.create(AtletasAPI.class);
-                Call<Mercado> call = atletasAPI.getMercado();
+                PartidasAPI partidasAPI = retrofitPartidas.create(PartidasAPI.class);
+                Call<PartidaClube> callPartidas = partidasAPI.getPartidas();
 
-                call.enqueue(new Callback<Mercado>() {
+                callPartidas.enqueue(new Callback<PartidaClube>() {
                     @Override
-                    public void onResponse(Call<Mercado> call, Response<Mercado> response) {
+                    public void onResponse(Call<PartidaClube> call, Response<PartidaClube> response) {
 
-                        Mercado mercado = response.body();
+                        _partidas = response.body();
 
-                        if (mercado != null) {
+                        if (_mercado != null) {
 
-                            if (mercado.getAtletas() != null) {
+                            if (_mercado.getAtletas() != null) {
 
                                 listDataScout = new HashMap<Atleta, List<String>>();
                                 List<Atleta> atletas = new ArrayList<Atleta>();
@@ -86,14 +107,14 @@ public class MercadoActivity extends AppCompatActivity {
 
                                 if (_filtro != 0) {
 
-                                    for (Atleta a : mercado.getAtletas()) {
+                                    for (Atleta a : _mercado.getAtletas()) {
                                         if (a.getPosicaoId() == _filtro) {
                                             atletas.add(a);
                                             listDataScout.put(a, scouts);
                                         }
                                     }
 
-                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,mercado.getClubes());
+                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,_mercado.getClubes());
                                     expListView.setAdapter(mercadoListAdapter);
                                 }
 
@@ -104,13 +125,22 @@ public class MercadoActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Mercado> call, Throwable t) {
+                    public void onFailure(Call<PartidaClube> call, Throwable t) {
                         Log.e(TAG, t.getMessage());
                     }
                 });
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Mercado> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
             }
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
