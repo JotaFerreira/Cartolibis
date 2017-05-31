@@ -93,7 +93,7 @@ public class MercadoActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout);
+                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,mercado.getClubes());
                                     expListView.setAdapter(mercadoListAdapter);
                                 }
 

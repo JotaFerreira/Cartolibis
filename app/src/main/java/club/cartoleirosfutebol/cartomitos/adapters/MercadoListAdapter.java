@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,10 +21,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
+import club.cartoleirosfutebol.cartomitos.data.Clube;
 import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
 import club.cartoleirosfutebol.cartomitos.data.Posicao;
@@ -37,15 +40,16 @@ import club.cartoleirosfutebol.cartomitos.data.Status;
 public class MercadoListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<Atleta> _listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<Atleta> _listDataHeader;
     private HashMap<Atleta, List<String>> _listDataChild;
+    private Map<String,Clube> _clubes;
 
     public MercadoListAdapter(Context context, List<Atleta> listDataHeader,
-                              HashMap<Atleta, List<String>> listChildData) {
+                              HashMap<Atleta, List<String>> listChildData, Map<String,Clube> clubes) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this._clubes = clubes;
     }
 
     @Override
@@ -115,6 +119,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         TextView lblMedia = (TextView) convertView.findViewById(R.id.db_med);
         TextView lblPreco = (TextView) convertView.findViewById(R.id.db_pre);
         TextView lblValorizacao = (TextView) convertView.findViewById(R.id.db_val);
+        ImageView imgEscudo = (ImageView) convertView.findViewById(R.id.db_escudo);
         ImageView imgStatus = (ImageView) convertView.findViewById(R.id.db_status);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
@@ -127,6 +132,21 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         Type listStatusType = new TypeToken<ArrayList<Status>>() {
         }.getType();
         List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
+
+        if(_clubes == null || jogador.getClubeId() == null || jogador.getClubeId() == 0){
+            imgEscudo.setImageResource(R.drawable.ic_escudo);
+        } else {
+            for (Clube c : _clubes.values()){
+                if(c.getId().intValue() == jogador.getClubeId()){
+                    if(c.getEscudos() != null){
+                        if(c.getEscudos().get60x60() != null && !c.getEscudos().get60x60().equals("")){
+                            Glide.with(_context).load(c.getEscudos().get60x60()).into(imgEscudo);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         if (jogador.getApelido() == null) {
             lblUltima.setVisibility(View.GONE);
