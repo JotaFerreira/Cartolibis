@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,6 +28,7 @@ import club.cartoleirosfutebol.cartomitos.data.Partida;
 import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +44,7 @@ public class MercadoActivity extends AppCompatActivity {
     ExpandableListView expListView;
     Mercado _mercado;
     PartidaClube _partidas;
+    SpotsDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +57,15 @@ public class MercadoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        dialog = new SpotsDialog(this, R.style.ProgressStyle);
         expListView = (ExpandableListView) findViewById(R.id.lvExpMercado);
 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        dialog.show();
         Gson gsonMercado = new GsonBuilder().registerTypeAdapter(Mercado.class, new MercadoDeserializer()).create();
         Retrofit retrofitAtletas = new Retrofit.Builder()
                 .baseUrl(APIConstraints.API_CARTOLA_BASE)
@@ -114,7 +118,7 @@ public class MercadoActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,_mercado.getClubes());
+                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout, _mercado.getClubes(), _partidas);
                                     expListView.setAdapter(mercadoListAdapter);
                                 }
 
@@ -126,16 +130,20 @@ public class MercadoActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<PartidaClube> call, Throwable t) {
+                        dialog.dismiss();
+                        Toast.makeText(MercadoActivity.this,t.getMessage(),Toast.LENGTH_LONG);
                         Log.e(TAG, t.getMessage());
                     }
                 });
 
-
+                dialog.dismiss();
 
             }
 
             @Override
             public void onFailure(Call<Mercado> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(MercadoActivity.this,t.getMessage(),Toast.LENGTH_LONG);
                 Log.e(TAG, t.getMessage());
             }
         });

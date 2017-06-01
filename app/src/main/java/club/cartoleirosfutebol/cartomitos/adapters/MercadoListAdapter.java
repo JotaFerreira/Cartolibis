@@ -144,28 +144,59 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         if (_clubes == null || jogador.getClubeId() == null || jogador.getClubeId() == 0) {
             imgEscudo.setImageResource(R.drawable.ic_escudo);
         } else {
+
+            String urlImagemMandante = "";
+            String urlImagemVisitante = "";
+
             for (Clube c : _clubes.values()) {
 
-                String urlImagemMandante = "";
-                String urlImagemVisitante = "";
-
-                if (_partidaClube != null && _partidaClube.getPartidas() != null) {
-                    for (Partida p : _partidaClube.getPartidas()) {
-                        if (p.getClubeCasaId().intValue() == c.getId().intValue()) {
-                            urlImagemMandante = c.getEscudos().get60x60();
-                        }
-                    }
-                }
-
                 if (c.getId().intValue() == jogador.getClubeId()) {
-                    if (c.getEscudos() != null) {
-                        if (c.getEscudos().get60x60() != null && !c.getEscudos().get60x60().equals("")) {
-                            Glide.with(_context).load(c.getEscudos().get60x60()).into(imgEscudo);
-                            break;
+                    String urlImagem = getUrlImagemClube(jogador.getClubeId());
+
+                    if(urlImagem != null){
+                        Glide.with(_context).load(urlImagem).into(imgEscudo);
+                    } else {
+                        imgEscudo.setImageResource(R.drawable.ic_escudo);
+                    }
+
+                    if (_partidaClube != null && _partidaClube.getPartidas() != null) {
+                        for (Partida p : _partidaClube.getPartidas()) {
+                            if (p.getClubeCasaId().intValue() == c.getId().intValue()) {
+                                urlImagemMandante = urlImagem;
+                                urlImagemVisitante = getUrlImagemClube(p.getClubeVisitanteId());
+                                break;
+                            }
+
+                            if (p.getClubeVisitanteId().intValue() == c.getId().intValue()) {
+                                urlImagemMandante = getUrlImagemClube(p.getClubeCasaId());
+                                urlImagemVisitante = urlImagem;
+                                break;
+                            }
+
                         }
                     }
+
+                    break;
+
                 }
             }
+
+            if(urlImagemMandante != null && urlImagemMandante != ""){
+                Glide.with(_context).load(urlImagemMandante).into(imgMandante);
+            } else {
+                imgMandante.setImageResource(R.drawable.ic_escudo);
+            }
+
+            if(urlImagemVisitante != null && urlImagemVisitante != ""){
+                Glide.with(_context).load(urlImagemVisitante).into(imgVisitante);
+            } else {
+                imgVisitante.setImageResource(R.drawable.ic_escudo);
+            }
+
+            imgMandante.setVisibility(View.VISIBLE);
+            lblVersus.setVisibility(View.VISIBLE);
+            imgVisitante.setVisibility(View.VISIBLE);
+
         }
 
         if (jogador.getApelido() == null) {
@@ -285,6 +316,30 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public String getUrlImagemClube(int clubeId) {
+        if (_clubes != null) {
+            for (Clube c : _clubes.values()) {
+                if (c.getId().intValue() == clubeId) {
+                    if (c.getEscudos() != null) {
+                        if (c.getEscudos().get60x60() != null) {
+                            return c.getEscudos().get60x60();
+                        }
+                        if (c.getEscudos().get45x45() != null) {
+                            return c.getEscudos().get45x45();
+                        }
+                        if (c.getEscudos().get30x30() != null) {
+                            return c.getEscudos().get30x30();
+                        }
+                    }
+                }
+            }
+        } else {
+            return null;
+        }
+
+        return null;
     }
 
 }
