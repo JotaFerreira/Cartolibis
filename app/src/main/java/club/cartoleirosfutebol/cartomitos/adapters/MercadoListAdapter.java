@@ -335,6 +335,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                     }
                 }
             }
+
         } else {
             return null;
         }

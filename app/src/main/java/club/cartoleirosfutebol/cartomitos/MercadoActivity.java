@@ -26,6 +26,7 @@ import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Mercado;
 import club.cartoleirosfutebol.cartomitos.data.Partida;
 import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
+import club.cartoleirosfutebol.cartomitos.data.Scout;
 import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
 import dmax.dialog.SpotsDialog;
@@ -112,9 +113,74 @@ public class MercadoActivity extends AppCompatActivity {
                                 if (_filtro != 0) {
 
                                     for (Atleta a : _mercado.getAtletas()) {
+                                        HashMap<Atleta, List<String>> scoutsAtleta = new HashMap<Atleta, List<String>>();
+                                        List<String> textosScout = new ArrayList<String>();
+
                                         if (a.getPosicaoId() == _filtro) {
+                                            Scout scout = a.getScout();
+                                            if(scout != null){
+                                                if(scout.getA() != null){
+                                                    textosScout.add(scout.getDesA() + " : " + scout.getA());
+                                                }
+                                                if(scout.getFC() != null){
+                                                    textosScout.add(scout.getDesFC() + " : " + scout.getFC());
+                                                }
+                                                if(scout.getFD() != null){
+                                                    textosScout.add(scout.getDesFD() + " : " + scout.getFD());
+                                                }
+                                                if(scout.getFF() != null){
+                                                    textosScout.add(scout.getDesFF() + " : " + scout.getFF());
+                                                }
+                                                if(scout.getFS() != null){
+                                                    textosScout.add(scout.getDesFS() + " : " + scout.getFS());
+                                                }
+                                                if(scout.getI() != null){
+                                                    textosScout.add(scout.getDesI() + " : " + scout.getI());
+                                                }
+                                                if(scout.getPE() != null){
+                                                    textosScout.add(scout.getDesPE() + " : " + scout.getPE());
+                                                }
+                                                if(scout.getRB() != null){
+                                                    textosScout.add(scout.getDesRB() + " : " + scout.getRB());
+                                                }
+                                                if(scout.getSG() != null){
+                                                    textosScout.add(scout.getDesSG() + " : " + scout.getSG());
+                                                }
+                                                if(scout.getCA() != null){
+                                                    textosScout.add(scout.getDesCA() + " : " + scout.getCA());
+                                                }
+                                                if(scout.getFT() != null){
+                                                    textosScout.add(scout.getDesFT() + " : " + scout.getFT());
+                                                }
+                                                if(scout.getG() != null){
+                                                    textosScout.add(scout.getDesG() + " : " + scout.getG());
+                                                }
+                                                if(scout.getCV() != null){
+                                                    textosScout.add(scout.getDesCV() + " : " + scout.getCV());
+                                                }
+                                                if(scout.getDD() != null){
+                                                    textosScout.add(scout.getDesDD() + " : " + scout.getDD());
+                                                }
+                                                if(scout.getGS() != null){
+                                                    textosScout.add(scout.getDesGS() + " : " + scout.getGS());
+                                                }
+                                                if(scout.getPP() != null){
+                                                    textosScout.add(scout.getDesPP() + " : " + scout.getPP());
+                                                }
+                                                if(scout.getDP() != null){
+                                                    textosScout.add(scout.getDesDP() + " : " + scout.getDP());
+                                                }
+                                                if(scout.getGC() != null){
+                                                    textosScout.add(scout.getDesGC() + " : " + scout.getGC());
+                                                }
+                                            }
+
+                                            if(textosScout.size() == 0){
+                                                textosScout.add("Sem informações para exibir");
+                                            }
+
                                             atletas.add(a);
-                                            listDataScout.put(a, scouts);
+                                            listDataScout.put(a, textosScout);
                                         }
                                     }
 
