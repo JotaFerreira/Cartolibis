@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -82,7 +84,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(childText);
+        txtListChild.setText(Html.fromHtml(childText));
         return convertView;
     }
 
@@ -130,6 +132,13 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         ImageView imgMandante = (ImageView) convertView.findViewById(R.id.db_mandante);
         ImageView imgVisitante = (ImageView) convertView.findViewById(R.id.db_visitante);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
+
+        btnJogador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Click Jogador", new Gson().toJson(jogador));
+            }
+        });
 
         String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
         Type listEsquemaType = new TypeToken<ArrayList<Posicao>>() {

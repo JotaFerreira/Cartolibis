@@ -200,19 +200,19 @@ public class Scout {
     // descrições
 
     public String getDesFC(){
-        return "Falta Cometida";
+        return "Faltas Cometidas";
     }
 
     public String getDesFD(){
-        return "Finalização Defendida";
+        return "Finalizações Defendidas";
     }
 
     public String getDesFF(){
-        return "Finalização pra Fora";
+        return "Finalizações pra Fora";
     }
 
     public String getDesFS(){
-        return "Falta Sofrida";
+        return "Faltas Sofridas";
     }
 
     public String getDesSG(){
@@ -220,23 +220,23 @@ public class Scout {
     }
 
     public String getDesI(){
-        return "Impedimento";
+        return "Impedimentos";
     }
 
     public String getDesPE(){
-        return "Passe Errado";
+        return "Passes Errados";
     }
 
     public String getDesRB(){
-        return "Roubada de Bola";
+        return "Roubadas de Bola";
     }
 
     public String getDesA(){
-        return "Assistência";
+        return "Assistências";
     }
 
     public String getDesCA(){
-        return "Cartão Amarelo";
+        return "Cartões Amarelos";
     }
 
     public String getDesFT(){
@@ -244,29 +244,29 @@ public class Scout {
     }
 
     public String getDesG(){
-        return "Gol";
+        return "Gols";
     }
 
-    public String getDesCV(){ return "Cartão Vermelho"; }
+    public String getDesCV(){ return "Cartões Vermelhos"; }
 
     public String getDesDD(){
-        return "Defesa Difícil";
+        return "Defesas Difíceis";
     }
 
     public String getDesGS(){
-        return "Gol Sofrido";
+        return "Gols Sofridos";
     }
 
     public String getDesPP(){
-        return "Pênalti Perdido";
+        return "Pênaltis Perdidos";
     }
 
     public String getDesDP(){
-        return "Defesa de Pênalti";
+        return "Defesas de Pênaltis";
     }
 
     public String getDesGC(){
-        return "Gol Contra";
+        return "Gols Contra";
     }
 
 }

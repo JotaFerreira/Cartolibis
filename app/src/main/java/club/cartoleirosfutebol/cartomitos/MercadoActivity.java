@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -102,14 +103,6 @@ public class MercadoActivity extends AppCompatActivity {
                                 listDataScout = new HashMap<Atleta, List<String>>();
                                 List<Atleta> atletas = new ArrayList<Atleta>();
 
-                                List<String> scouts = new ArrayList<String>();
-                                scouts.add("Gol");
-                                scouts.add("Assistência");
-                                scouts.add("Finalização");
-                                scouts.add("Finalização Defendida");
-                                scouts.add("Finalização Pra Fora");
-                                scouts.add("Falta Sofrida");
-
                                 if (_filtro != 0) {
 
                                     for (Atleta a : _mercado.getAtletas()) {
@@ -120,63 +113,63 @@ public class MercadoActivity extends AppCompatActivity {
                                             Scout scout = a.getScout();
                                             if(scout != null){
                                                 if(scout.getA() != null){
-                                                    textosScout.add(scout.getDesA() + " : " + scout.getA());
+                                                    textosScout.add("<b>" + scout.getDesA() + " : </b>" + scout.getA());
                                                 }
                                                 if(scout.getFC() != null){
-                                                    textosScout.add(scout.getDesFC() + " : " + scout.getFC());
+                                                    textosScout.add("<b>" + scout.getDesFC() + " : </b>" + scout.getFC());
                                                 }
                                                 if(scout.getFD() != null){
-                                                    textosScout.add(scout.getDesFD() + " : " + scout.getFD());
+                                                    textosScout.add("<b>" + scout.getDesFD() + " : </b>" + scout.getFD());
                                                 }
                                                 if(scout.getFF() != null){
-                                                    textosScout.add(scout.getDesFF() + " : " + scout.getFF());
+                                                    textosScout.add("<b>" + scout.getDesFF() + " : </b>" + scout.getFF());
                                                 }
                                                 if(scout.getFS() != null){
-                                                    textosScout.add(scout.getDesFS() + " : " + scout.getFS());
+                                                    textosScout.add("<b>" + scout.getDesFS() + " : </b>" + scout.getFS());
                                                 }
                                                 if(scout.getI() != null){
-                                                    textosScout.add(scout.getDesI() + " : " + scout.getI());
+                                                    textosScout.add("<b>" + scout.getDesI() + " : </b>" + scout.getI());
                                                 }
                                                 if(scout.getPE() != null){
-                                                    textosScout.add(scout.getDesPE() + " : " + scout.getPE());
+                                                    textosScout.add("<b>" + scout.getDesPE() + " : </b>" + scout.getPE());
                                                 }
                                                 if(scout.getRB() != null){
-                                                    textosScout.add(scout.getDesRB() + " : " + scout.getRB());
+                                                    textosScout.add("<b>" + scout.getDesRB() + " : </b>" + scout.getRB());
                                                 }
                                                 if(scout.getSG() != null){
-                                                    textosScout.add(scout.getDesSG() + " : " + scout.getSG());
+                                                    textosScout.add("<b>" + scout.getDesSG() + " : </b>" + scout.getSG());
                                                 }
                                                 if(scout.getCA() != null){
-                                                    textosScout.add(scout.getDesCA() + " : " + scout.getCA());
+                                                    textosScout.add("<b>" + scout.getDesCA() + " : </b>" + scout.getCA());
                                                 }
                                                 if(scout.getFT() != null){
-                                                    textosScout.add(scout.getDesFT() + " : " + scout.getFT());
+                                                    textosScout.add("<b>" + scout.getDesFT() + " :</b> " + scout.getFT());
                                                 }
                                                 if(scout.getG() != null){
-                                                    textosScout.add(scout.getDesG() + " : " + scout.getG());
+                                                    textosScout.add("<b>" + scout.getDesG() + " : </b>" + scout.getG());
                                                 }
                                                 if(scout.getCV() != null){
-                                                    textosScout.add(scout.getDesCV() + " : " + scout.getCV());
+                                                    textosScout.add("<b>" + scout.getDesCV() + " : </b>" + scout.getCV());
                                                 }
                                                 if(scout.getDD() != null){
-                                                    textosScout.add(scout.getDesDD() + " : " + scout.getDD());
+                                                    textosScout.add("<b>" + scout.getDesDD() + " : </b>" + scout.getDD());
                                                 }
                                                 if(scout.getGS() != null){
-                                                    textosScout.add(scout.getDesGS() + " : " + scout.getGS());
+                                                    textosScout.add("<b>" + scout.getDesGS() + " : </b>" + scout.getGS());
                                                 }
                                                 if(scout.getPP() != null){
-                                                    textosScout.add(scout.getDesPP() + " : " + scout.getPP());
+                                                    textosScout.add("<b>" + scout.getDesPP() + " : </b>" + scout.getPP());
                                                 }
                                                 if(scout.getDP() != null){
-                                                    textosScout.add(scout.getDesDP() + " : " + scout.getDP());
+                                                    textosScout.add("<b>" + scout.getDesDP() + " : </b>" + scout.getDP());
                                                 }
                                                 if(scout.getGC() != null){
-                                                    textosScout.add(scout.getDesGC() + " : " + scout.getGC());
+                                                    textosScout.add("<b>" + scout.getDesGC() + " : </b>" + scout.getGC());
                                                 }
                                             }
 
                                             if(textosScout.size() == 0){
-                                                textosScout.add("Sem informações para exibir");
+                                                textosScout.add("<b>Sem informações para exibir</b>");
                                             }
 
                                             atletas.add(a);
@@ -186,6 +179,7 @@ public class MercadoActivity extends AppCompatActivity {
 
                                     mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout, _mercado.getClubes(), _partidas);
                                     expListView.setAdapter(mercadoListAdapter);
+                                    dialog.dismiss();
                                 }
 
                             }
@@ -202,8 +196,6 @@ public class MercadoActivity extends AppCompatActivity {
                     }
                 });
 
-                dialog.dismiss();
-
             }
 
             @Override
@@ -213,6 +205,7 @@ public class MercadoActivity extends AppCompatActivity {
                 Log.e(TAG, t.getMessage());
             }
         });
+
     }
 
 

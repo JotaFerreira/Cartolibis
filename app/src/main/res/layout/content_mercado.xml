@@ -8,17 +8,17 @@
     tools:context="club.cartoleirosfutebol.cartomitos.MercadoActivity"
     tools:showIn="@layout/activity_mercado">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="#f4f4f4" >
+        android:background="#fff" >
 
         <ExpandableListView
             android:id="@+id/lvExpMercado"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
