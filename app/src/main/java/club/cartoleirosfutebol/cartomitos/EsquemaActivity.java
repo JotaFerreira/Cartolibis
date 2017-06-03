@@ -1,21 +1,17 @@
 package club.cartoleirosfutebol.cartomitos;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import club.cartoleirosfutebol.cartomitos.util.Helpers;
 
 public class EsquemaActivity extends AppCompatActivity {
 
@@ -69,7 +65,6 @@ public class EsquemaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EsquemaActivity.this, EscalacaoActivity.class);
-                intent.putExtra("esquema_user",Helpers.GetStringSharedPreference(EsquemaActivity.this,"user_scheme"));
                 startActivity(intent);
             }
         });

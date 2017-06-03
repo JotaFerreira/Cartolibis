@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import club.cartoleirosfutebol.cartomitos.EscalacaoActivity;
 import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
@@ -36,6 +37,7 @@ import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.data.Posicao;
 import club.cartoleirosfutebol.cartomitos.data.PosicaoEsquema;
 import club.cartoleirosfutebol.cartomitos.data.Status;
+import club.cartoleirosfutebol.cartomitos.util.Helpers;
 
 /**
  * Created by joao.oliveira on 29/05/2017.
@@ -48,14 +50,16 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
     private HashMap<Atleta, List<String>> _listDataChild;
     private Map<String, Clube> _clubes;
     PartidaClube _partidaClube;
+    int escalacaoId;
 
     public MercadoListAdapter(Context context, List<Atleta> listDataHeader,
-                              HashMap<Atleta, List<String>> listChildData, Map<String, Clube> clubes, PartidaClube partidaClube) {
+                              HashMap<Atleta, List<String>> listChildData, Map<String, Clube> clubes, PartidaClube partidaClube, int escalacaoId) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._clubes = clubes;
         this._partidaClube = partidaClube;
+        this.escalacaoId = escalacaoId;
     }
 
     @Override
@@ -133,13 +137,6 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
         ImageView imgVisitante = (ImageView) convertView.findViewById(R.id.db_visitante);
         ImageButton btnJogador = (ImageButton) convertView.findViewById(R.id.btnJogador);
 
-        btnJogador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Click Jogador", new Gson().toJson(jogador));
-            }
-        });
-
         String posicoesEsquemaJson = _context.getResources().getString(R.string.posicoes_json);
         Type listEsquemaType = new TypeToken<ArrayList<Posicao>>() {
         }.getType();
@@ -161,8 +158,8 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
 
                 if (c.getId().intValue() == jogador.getClubeId()) {
                     String urlImagem = getUrlImagemClube(jogador.getClubeId());
-
-                    if(urlImagem != null){
+                    jogador.setUrlEscudo(urlImagem);
+                    if (urlImagem != null) {
                         Glide.with(_context).load(urlImagem).into(imgEscudo);
                     } else {
                         imgEscudo.setImageResource(R.drawable.ic_escudo);
@@ -172,13 +169,19 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                         for (Partida p : _partidaClube.getPartidas()) {
                             if (p.getClubeCasaId().intValue() == c.getId().intValue()) {
                                 urlImagemMandante = urlImagem;
-                                urlImagemVisitante = getUrlImagemClube(p.getClubeVisitanteId());
+                                jogador.setUrlMandante(urlImagem);
+                                String urlClubeJogadorVisitante = getUrlImagemClube(p.getClubeVisitanteId());
+                                urlImagemVisitante = urlClubeJogadorVisitante;
+                                jogador.setUrlVisitante(urlClubeJogadorVisitante);
                                 break;
                             }
 
                             if (p.getClubeVisitanteId().intValue() == c.getId().intValue()) {
-                                urlImagemMandante = getUrlImagemClube(p.getClubeCasaId());
+                                String urlClubeJogadorMandante = getUrlImagemClube(p.getClubeCasaId());
+                                urlImagemMandante = urlClubeJogadorMandante;
+                                jogador.setUrlMandante(urlClubeJogadorMandante);
                                 urlImagemVisitante = urlImagem;
+                                jogador.setUrlVisitante(urlImagem);
                                 break;
                             }
 
@@ -190,13 +193,24 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                 }
             }
 
-            if(urlImagemMandante != null && urlImagemMandante != ""){
+            btnJogador.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String jsonJogador = new Gson().toJson(jogador);
+                    Helpers.PutSharedPreference(_context, "j" + escalacaoId + "_" + jogador.getPosicaoId(), jsonJogador);
+                    Log.i("BTNJOGADOR:","j" + escalacaoId + "_" + jogador.getPosicaoId());
+                    Intent intent = new Intent(_context, EscalacaoActivity.class);
+                    _context.startActivity(intent);
+                }
+            });
+
+            if (urlImagemMandante != null && urlImagemMandante != "") {
                 Glide.with(_context).load(urlImagemMandante).into(imgMandante);
             } else {
                 imgMandante.setImageResource(R.drawable.ic_escudo);
             }
 
-            if(urlImagemVisitante != null && urlImagemVisitante != ""){
+            if (urlImagemVisitante != null && urlImagemVisitante != "") {
                 Glide.with(_context).load(urlImagemVisitante).into(imgVisitante);
             } else {
                 imgVisitante.setImageResource(R.drawable.ic_escudo);
@@ -208,6 +222,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
 
         }
 
+        // define o apelido do jogador
         if (jogador.getApelido() == null) {
             lblUltima.setVisibility(View.GONE);
         } else {
@@ -215,6 +230,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblNome.setText(jogador.getApelido());
         }
 
+        // define a posição do jogador
         if (jogador.getPosicaoId() == null) {
             lblPosicao.setVisibility(View.GONE);
         } else {
@@ -232,6 +248,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblPosicao.setText(posicaoNome);
         }
 
+        // define o status do jogador
         if (jogador.getStatusId() == null) {
             imgStatus.setVisibility(View.GONE);
         } else {
@@ -259,6 +276,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             }
         }
 
+        // define a media do jogador
         if (jogador.getMediaNum() == null) {
             lblMedia.setVisibility(View.GONE);
         } else {
@@ -266,6 +284,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblMedia.setText("Média: " + jogador.getMediaNum());
         }
 
+        // define o numero de jogos do jogador
         if (jogador.getJogosNum() == null) {
             lblJogos.setVisibility(View.GONE);
         } else {
@@ -273,6 +292,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblJogos.setText("Jogos: " + jogador.getJogosNum());
         }
 
+        // define a ultima pontuação do jogador
         if (jogador.getPontosNum() == null) {
             lblUltima.setVisibility(View.GONE);
         } else {
@@ -280,6 +300,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblUltima.setText("Última: " + jogador.getPontosNum());
         }
 
+        // define o preço do jogador
         if (jogador.getPrecoNum() == null) {
             lblPreco.setVisibility(View.GONE);
         } else {
@@ -287,6 +308,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblPreco.setText("C$: " + jogador.getPrecoNum());
         }
 
+        // define a variacao do jogador
         if (jogador.getVariacaoNum() == null) {
             lblValorizacao.setVisibility(View.GONE);
         } else {
@@ -303,16 +325,6 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
             lblValorizacao.setVisibility(View.VISIBLE);
             lblValorizacao.setText("C$: " + indicador + jogador.getVariacaoNum());
         }
-
- /*       btnJogador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(_context, MercadoActivity.class);
-                intent.putExtra("filtro",jogador.getPosicao());
-                _context.startActivity(intent);
-                Log.i("ONCLICK",jogador.getPosicao());
-            }
-        });*/
 
         return convertView;
     }

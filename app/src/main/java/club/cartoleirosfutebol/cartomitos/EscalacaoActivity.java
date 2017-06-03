@@ -21,6 +21,8 @@ import club.cartoleirosfutebol.cartomitos.adapters.EscalacaoListAdapter;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Scout;
+import club.cartoleirosfutebol.cartomitos.util.Helpers;
 
 public class EscalacaoActivity extends AppCompatActivity {
 
@@ -37,79 +39,23 @@ public class EscalacaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escalacao);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        // preparing list data
+        esquemaIntent = Helpers.GetStringSharedPreference(this, "user_scheme");
+        toolbar.setTitle("Escalação - (" + esquemaIntent + ")");
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        // get the listview
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        Intent intent = getIntent();
-        // preparing list data
-        esquemaIntent = intent.getStringExtra("esquema_user");
         prepareListData(esquemaIntent);
 
         listAdapter = new EscalacaoListAdapter(this, listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
-        // Listview Group click listener
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                Log.d("onGroupClick:","ops");
-                 /*Toast.makeText(getApplicationContext(),
-                 "Group Clicked " + listDataHeader.get(groupPosition),
-                 Toast.LENGTH_SHORT).show();*/
-                return false;
-            }
-        });
-
-        // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Log.d("onGroupExpand:","ops");
-                /*Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();*/
-            }
-        });
-
-        // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Log.d("onGroupCollapse:","ops");
-                /*Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();*/
-
-            }
-        });
-
-        // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                /*Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();*/
-                return false;
-            }
-        });
 
     }
 
@@ -130,66 +76,245 @@ public class EscalacaoActivity extends AppCompatActivity {
 
         listDataHeader = new ArrayList<Atleta>();
         listDataChild = new HashMap<Atleta, List<String>>();
+        List<String> textoScoutVazio = new ArrayList<String>();
+        textoScoutVazio.add("<b>Sem informações para exibir</b>");
 
         String esquemasJson = getResources().getString(R.string.esquemas_json);
-        Type listEsquemaType = new TypeToken<ArrayList<Esquema>>(){}.getType();
-        esquemas = new Gson().fromJson(esquemasJson,listEsquemaType);
+        Type listEsquemaType = new TypeToken<ArrayList<Esquema>>() {
+        }.getType();
+        esquemas = new Gson().fromJson(esquemasJson, listEsquemaType);
         Esquema esquemaPosicao = new Esquema();
 
-        for(Esquema e : esquemas){
-            if(e.getNome().equals(esquema)){
+        for (Esquema e : esquemas) {
+            if (e.getNome().equals(esquema)) {
                 esquemaPosicao = e;
+                break;
             }
         }
 
-        if(esquemaPosicao != null){
+        if (esquemaPosicao != null) {
+
             int laterais = esquemaPosicao.getPosicoes().getLat();
             int zagueiros = esquemaPosicao.getPosicoes().getZag();
             int meias = esquemaPosicao.getPosicoes().getMei();
             int atacantes = esquemaPosicao.getPosicoes().getAta();
 
-            Atleta jGol = new Atleta();
-            jGol.setNome("Jogador");
-            jGol.setPosicaoId(1);
-            listDataHeader.add(jGol);
+            String jsonGol = Helpers.GetStringSharedPreference(this, "j0_1");
 
-            for(int i = 0; i < zagueiros; i++){
-                Atleta j = new Atleta();
-                j.setNome("Jogador");
-                j.setPosicaoId(3);
-                listDataHeader.add(j);
+            if (jsonGol != null && !jsonGol.equals("")) {
+                try {
+                    Atleta goleiro = new Gson().fromJson(jsonGol, Atleta.class);
+                    if (goleiro != null) {
+                        listDataHeader.add(goleiro);
+                        listDataChild.put(goleiro, getScoutValues(goleiro.getScout()));
+                    } else {
+                        Helpers.PutSharedPreference(this, "j0_1", "");
+                        Atleta jGol = new Atleta();
+                        jGol.setNome("Jogador");
+                        jGol.setPosicaoId(1);
+                        listDataHeader.add(jGol);
+                        listDataChild.put(jGol, textoScoutVazio);
+                    }
+                } catch (Exception e) {
+                    Helpers.PutSharedPreference(this, "j0_1", "");
+                    Atleta jGol = new Atleta();
+                    jGol.setNome("Jogador");
+                    jGol.setPosicaoId(1);
+                    listDataHeader.add(jGol);
+                    listDataChild.put(jGol, textoScoutVazio);
+                }
+            } else {
+                Helpers.PutSharedPreference(this, "j0_1", "");
+                Atleta jGol = new Atleta();
+                jGol.setNome("Jogador");
+                jGol.setPosicaoId(1);
+                listDataHeader.add(jGol);
+                listDataChild.put(jGol, textoScoutVazio);
             }
 
-            for(int i = 0; i < laterais; i++){
-                Atleta j = new Atleta();
-                j.setNome("Jogador");
-                j.setPosicaoId(2);
-                listDataHeader.add(j);
+            for (int i = 0; i < zagueiros; i++) {
+                int posicaoId = 3;
+                String chave = "j" + listDataHeader.size() + "_" + posicaoId;
+                String json = Helpers.GetStringSharedPreference(this, chave);
+                if (json != null && !json.equals("")) {
+                    try {
+                        Atleta atleta = new Gson().fromJson(json, Atleta.class);
+                        if (atleta != null) {
+                            listDataHeader.add(atleta);
+                            listDataChild.put(atleta, getScoutValues(atleta.getScout()));
+                        } else {
+                            Helpers.PutSharedPreference(this,chave, "");
+                            Atleta jog = new Atleta();
+                            jog.setNome("Jogador");
+                            jog.setPosicaoId(posicaoId);
+                            listDataHeader.add(jog);
+                            listDataChild.put(jog, textoScoutVazio);
+                        }
+                    } catch (Exception e) {
+                        Helpers.PutSharedPreference(this,chave, "");
+                        Atleta jog = new Atleta();
+                        jog.setNome("Jogador");
+                        jog.setPosicaoId(posicaoId);
+                        listDataHeader.add(jog);
+                        listDataChild.put(jog, textoScoutVazio);
+                    }
+                } else {
+                    Helpers.PutSharedPreference(this,chave, "");
+                    Atleta j = new Atleta();
+                    j.setNome("Jogador");
+                    j.setPosicaoId(posicaoId);
+                    listDataHeader.add(j);
+                    listDataChild.put(j, textoScoutVazio);
+                }
             }
 
-            for(int i = 0; i < meias; i++){
-                Atleta j = new Atleta();
-                j.setNome("Jogador");
-                j.setPosicaoId(4);
-                listDataHeader.add(j);
+            for (int i = 0; i < laterais; i++) {
+                int posicaoId = 2;
+                String chave = "j" + listDataHeader.size() + "_" + posicaoId;
+                String json = Helpers.GetStringSharedPreference(this, chave);
+                if (json != null && !json.equals("")) {
+                    try {
+                        Atleta atleta = new Gson().fromJson(json, Atleta.class);
+                        if (atleta != null) {
+                            listDataHeader.add(atleta);
+                            listDataChild.put(atleta, getScoutValues(atleta.getScout()));
+                        } else {
+                            Helpers.PutSharedPreference(this,chave, "");
+                            Atleta j = new Atleta();
+                            j.setNome("Jogador");
+                            j.setPosicaoId(posicaoId);
+                            listDataHeader.add(j);
+                            listDataChild.put(j, textoScoutVazio);
+                        }
+                    } catch (Exception e) {
+                        Helpers.PutSharedPreference(this,chave, "");
+                        Atleta jog = new Atleta();
+                        jog.setNome("Jogador");
+                        jog.setPosicaoId(posicaoId);
+                        listDataHeader.add(jog);
+                        listDataChild.put(jog, textoScoutVazio);
+                    }
+                } else {
+                    Helpers.PutSharedPreference(this,chave, "");
+                    Atleta j = new Atleta();
+                    j.setNome("Jogador");
+                    j.setPosicaoId(posicaoId);
+                    listDataHeader.add(j);
+                    listDataChild.put(j, textoScoutVazio);
+                }
             }
 
-            for(int i = 0; i < atacantes; i++){
-                Atleta j = new Atleta();
-                j.setNome("Jogador");
-                j.setPosicaoId(5);
-                listDataHeader.add(j);
+            for (int i = 0; i < meias; i++) {
+                int posicaoId = 4;
+                String chave = "j" + listDataHeader.size() + "_" + posicaoId;
+                String json = Helpers.GetStringSharedPreference(this, chave);
+                if (json != null && !json.equals("")) {
+                    try {
+                        Atleta atleta = new Gson().fromJson(json, Atleta.class);
+                        if (atleta != null) {
+                            listDataHeader.add(atleta);
+                            listDataChild.put(atleta, getScoutValues(atleta.getScout()));
+                        } else {
+                            Helpers.PutSharedPreference(this,chave, "");
+                            Atleta jog = new Atleta();
+                            jog.setNome("Jogador");
+                            jog.setPosicaoId(posicaoId);
+                            listDataHeader.add(jog);
+                            listDataChild.put(jog, textoScoutVazio);
+                        }
+                    } catch (Exception e) {
+                        Helpers.PutSharedPreference(this,chave, "");
+                        Atleta jog = new Atleta();
+                        jog.setNome("Jogador");
+                        jog.setPosicaoId(posicaoId);
+                        listDataHeader.add(jog);
+                        listDataChild.put(jog, textoScoutVazio);
+                    }
+                } else {
+                    Helpers.PutSharedPreference(this,chave, "");
+                    Atleta j = new Atleta();
+                    j.setNome("Jogador");
+                    j.setPosicaoId(posicaoId);
+                    listDataHeader.add(j);
+                    listDataChild.put(j, textoScoutVazio);
+                }
             }
 
-            Atleta jTec = new Atleta();
-            jTec.setNome("Técnico");
-            jTec.setPosicaoId(6);
-            listDataHeader.add(jTec);
+            for (int i = 0; i < atacantes; i++) {
+                int posicaoId = 5;
+                String chave = "j" + listDataHeader.size() + "_" + posicaoId;
+                String json = Helpers.GetStringSharedPreference(this, chave);
+                if (json != null && !json.equals("")) {
+                    try {
+                        Atleta atleta = new Gson().fromJson(json, Atleta.class);
+                        if (atleta != null) {
+                            listDataHeader.add(atleta);
+                            listDataChild.put(atleta, getScoutValues(atleta.getScout()));
+                        } else {
+                            Helpers.PutSharedPreference(this,chave, "");
+                            Atleta j = new Atleta();
+                            j.setNome("Jogador");
+                            j.setPosicaoId(posicaoId);
+                            listDataHeader.add(j);
+                            listDataChild.put(j, textoScoutVazio);
+                        }
+                    } catch (Exception e) {
+                        Helpers.PutSharedPreference(this,chave, "");
+                        Atleta jog = new Atleta();
+                        jog.setNome("Jogador");
+                        jog.setPosicaoId(posicaoId);
+                        listDataHeader.add(jog);
+                        listDataChild.put(jog, textoScoutVazio);
+                    }
+                } else {
+                    Helpers.PutSharedPreference(this,chave, "");
+                    Atleta j = new Atleta();
+                    j.setNome("Jogador");
+                    j.setPosicaoId(posicaoId);
+                    listDataHeader.add(j);
+                    listDataChild.put(j, textoScoutVazio);
+                }
+            }
+
+            int posicaoIdTecnico = 6;
+            String chaveTec = "j" + listDataHeader.size() + "_" + posicaoIdTecnico;
+            String jsonTec = Helpers.GetStringSharedPreference(this, chaveTec);
+
+            if (jsonTec != null && !jsonTec.equals("")) {
+                try {
+                    Atleta tecnico = new Gson().fromJson(jsonTec, Atleta.class);
+                    if (tecnico != null) {
+                        listDataHeader.add(tecnico);
+                        listDataChild.put(tecnico, getScoutValues(tecnico.getScout()));
+                    } else {
+                        Helpers.PutSharedPreference(this, chaveTec, "");
+                        Atleta jTec = new Atleta();
+                        jTec.setNome("Técnico");
+                        jTec.setPosicaoId(posicaoIdTecnico);
+                        listDataHeader.add(jTec);
+                        listDataChild.put(jTec, textoScoutVazio);
+                    }
+                } catch (Exception e) {
+                    Helpers.PutSharedPreference(this, chaveTec, "");
+                    Atleta jTec = new Atleta();
+                    jTec.setNome("Técnico");
+                    jTec.setPosicaoId(posicaoIdTecnico);
+                    listDataHeader.add(jTec);
+                    listDataChild.put(jTec, textoScoutVazio);
+                }
+            } else {
+                Helpers.PutSharedPreference(this, chaveTec, "");
+                Atleta jTec = new Atleta();
+                jTec.setNome("Técnico");
+                jTec.setPosicaoId(posicaoIdTecnico);
+                listDataHeader.add(jTec);
+                listDataChild.put(jTec, textoScoutVazio);
+            }
 
         }
 
         // Adding child data
-        List<String> top250 = new ArrayList<String>();
+      /*  List<String> top250 = new ArrayList<String>();
         top250.add("Gol");
         top250.add("Assistência");
         top250.add("Finalização");
@@ -208,7 +333,70 @@ public class EscalacaoActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(8), top250);
         listDataChild.put(listDataHeader.get(9), top250);
         listDataChild.put(listDataHeader.get(10), top250);
-        listDataChild.put(listDataHeader.get(11), top250);
+        listDataChild.put(listDataHeader.get(11), top250);*/
     }
 
+    private List<String> getScoutValues(Scout scout){
+        List<String> textosScout = new ArrayList<String>();
+        if(scout != null){
+            if(scout.getA() != null){
+                textosScout.add("<b>" + scout.getDesA() + ": </b>" + scout.getA());
+            }
+            if(scout.getFC() != null){
+                textosScout.add("<b>" + scout.getDesFC() + ": </b>" + scout.getFC());
+            }
+            if(scout.getFD() != null){
+                textosScout.add("<b>" + scout.getDesFD() + ": </b>" + scout.getFD());
+            }
+            if(scout.getFF() != null){
+                textosScout.add("<b>" + scout.getDesFF() + ": </b>" + scout.getFF());
+            }
+            if(scout.getFS() != null){
+                textosScout.add("<b>" + scout.getDesFS() + ": </b>" + scout.getFS());
+            }
+            if(scout.getI() != null){
+                textosScout.add("<b>" + scout.getDesI() + ": </b>" + scout.getI());
+            }
+            if(scout.getPE() != null){
+                textosScout.add("<b>" + scout.getDesPE() + ": </b>" + scout.getPE());
+            }
+            if(scout.getRB() != null){
+                textosScout.add("<b>" + scout.getDesRB() + ": </b>" + scout.getRB());
+            }
+            if(scout.getSG() != null){
+                textosScout.add("<b>" + scout.getDesSG() + ": </b>" + scout.getSG());
+            }
+            if(scout.getCA() != null){
+                textosScout.add("<b>" + scout.getDesCA() + ": </b>" + scout.getCA());
+            }
+            if(scout.getFT() != null){
+                textosScout.add("<b>" + scout.getDesFT() + ":</b> " + scout.getFT());
+            }
+            if(scout.getG() != null){
+                textosScout.add("<b>" + scout.getDesG() + ": </b>" + scout.getG());
+            }
+            if(scout.getCV() != null){
+                textosScout.add("<b>" + scout.getDesCV() + ": </b>" + scout.getCV());
+            }
+            if(scout.getDD() != null){
+                textosScout.add("<b>" + scout.getDesDD() + ": </b>" + scout.getDD());
+            }
+            if(scout.getGS() != null){
+                textosScout.add("<b>" + scout.getDesGS() + ": </b>" + scout.getGS());
+            }
+            if(scout.getPP() != null){
+                textosScout.add("<b>" + scout.getDesPP() + ": </b>" + scout.getPP());
+            }
+            if(scout.getDP() != null){
+                textosScout.add("<b>" + scout.getDesDP() + ": </b>" + scout.getDP());
+            }
+            if(scout.getGC() != null){
+                textosScout.add("<b>" + scout.getDesGC() + ": </b>" + scout.getGC());
+            }
+        }
+        if(textosScout.size() == 0){
+            textosScout.add("<b>Sem informações para exibir</b>");
+        }
+        return textosScout;
+    }
 }

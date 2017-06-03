@@ -29,10 +29,12 @@
         <activity
             android:name=".EscalacaoActivity"
             android:label="@string/title_activity_escalacao"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MercadoActivity"
             android:label="@string/title_activity_mercado"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

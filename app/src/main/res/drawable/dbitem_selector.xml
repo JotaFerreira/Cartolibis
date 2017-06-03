@@ -16,9 +16,8 @@
       android:state_pressed="true" >
     <shape android:shape="rectangle">
       <gradient
-          android:startColor="#78DDFF"
-          android:centerColor="#16cedb"
-          android:endColor="#09adb9"
+          android:startColor="#a8e063"
+          android:endColor="#56ab2f"
           android:angle="270" />
     </shape>
   </item>
@@ -28,9 +27,8 @@
       android:state_pressed="false">
     <shape android:shape="rectangle">
       <gradient
-          android:startColor="#78DDFF"
-          android:centerColor="#16cedb"
-          android:endColor="#09adb9"
+          android:startColor="#a8e063"
+          android:endColor="#56ab2f"
           android:angle="270" />
     </shape>
   </item>

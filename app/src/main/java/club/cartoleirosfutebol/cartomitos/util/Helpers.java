@@ -1,4 +1,4 @@
-package club.cartoleirosfutebol.cartomitos;
+package club.cartoleirosfutebol.cartomitos.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

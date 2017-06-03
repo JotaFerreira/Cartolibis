@@ -50,6 +50,9 @@ public class Atleta {
     @SerializedName("scout")
     @Expose
     private Scout scout;
+    private String urlEscudo;
+    private String urlMandante;
+    private String urlVisitante;
 
     public String getNome() {
         return nome;
@@ -161,6 +164,30 @@ public class Atleta {
 
     public void setScout(Scout scout) {
         this.scout = scout;
+    }
+
+    public String getUrlEscudo() {
+        return urlEscudo;
+    }
+
+    public void setUrlEscudo(String urlEscudo) {
+        this.urlEscudo = urlEscudo;
+    }
+
+    public String getUrlMandante() {
+        return urlMandante;
+    }
+
+    public void setUrlMandante(String urlMandante) {
+        this.urlMandante = urlMandante;
+    }
+
+    public String getUrlVisitante() {
+        return urlVisitante;
+    }
+
+    public void setUrlVisitante(String urlVisitante) {
+        this.urlVisitante = urlVisitante;
     }
 
 }
