@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EscalacaoActivity">
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="200"
+        android:title="Deletar Time"
+        android:icon="@drawable/ic_lixeira"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/action_esquema"
+        android:orderInCategory="200"
+        android:title="Esquema"
+        android:icon="@drawable/ic_campo"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/action_confirm"
+        android:orderInCategory="200"
+        android:title="Confirmar"
+        android:icon="@drawable/ic_confirm"
+        app:showAsAction="ifRoom">
+    </item>
+
+</menu>

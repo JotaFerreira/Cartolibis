@@ -1,15 +1,21 @@
 package club.cartoleirosfutebol.cartomitos;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
+import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -18,11 +24,26 @@ import java.util.List;
 import java.lang.reflect.Type;
 
 import club.cartoleirosfutebol.cartomitos.adapters.EscalacaoListAdapter;
+import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
+import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
+import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
+import club.cartoleirosfutebol.cartomitos.api.PartidasAPI;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Esquema;
 import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Mercado;
+import club.cartoleirosfutebol.cartomitos.data.Partida;
+import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.data.Scout;
 import club.cartoleirosfutebol.cartomitos.util.Helpers;
+import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
+import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EscalacaoActivity extends AppCompatActivity {
 
@@ -33,6 +54,8 @@ public class EscalacaoActivity extends AppCompatActivity {
     List<Esquema> esquemas;
     Esquema esquemaUser;
     String esquemaIntent;
+    private final String TAG = "EscalacaoActivity";
+    SpotsDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +86,37 @@ public class EscalacaoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // todo: goto back activity from here
-                onBackPressed();
+                moveBack();
+                return true;
+            case R.id.action_delete:
+                Drawable d = getResources().getDrawable(R.drawable.dialog_erro);
+                FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(this)
+                        .setImageDrawable(d)
+                        .setTextTitle("Tem certeza?")
+                        .setTextSubTitle("Deletar todo o time")
+                        .setBody("Tem certeza que deseja remover todos os jogadores do time?")
+                        .setNegativeColor(R.color.colorRedDark)
+                        .setNegativeButtonText("Não, cliquei errado!")
+                        .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
+                            @Override
+                            public void OnClick(View view, Dialog dialog) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButtonText("CLARO!")
+                        .setPositiveColor(R.color.colorPrimary)
+                        .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
+                            @Override
+                            public void OnClick(View view, Dialog dialog) {
+                                Toast.makeText(EscalacaoActivity.this, "Updating", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build();
+                alert.show();
+                return true;
+            case R.id.action_esquema:
+                Intent intent = new Intent(this, EsquemaActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
@@ -143,7 +195,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataHeader.add(atleta);
                             listDataChild.put(atleta, getScoutValues(atleta.getScout()));
                         } else {
-                            Helpers.PutSharedPreference(this,chave, "");
+                            Helpers.PutSharedPreference(this, chave, "");
                             Atleta jog = new Atleta();
                             jog.setNome("Jogador");
                             jog.setPosicaoId(posicaoId);
@@ -151,7 +203,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataChild.put(jog, textoScoutVazio);
                         }
                     } catch (Exception e) {
-                        Helpers.PutSharedPreference(this,chave, "");
+                        Helpers.PutSharedPreference(this, chave, "");
                         Atleta jog = new Atleta();
                         jog.setNome("Jogador");
                         jog.setPosicaoId(posicaoId);
@@ -159,7 +211,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                         listDataChild.put(jog, textoScoutVazio);
                     }
                 } else {
-                    Helpers.PutSharedPreference(this,chave, "");
+                    Helpers.PutSharedPreference(this, chave, "");
                     Atleta j = new Atleta();
                     j.setNome("Jogador");
                     j.setPosicaoId(posicaoId);
@@ -179,7 +231,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataHeader.add(atleta);
                             listDataChild.put(atleta, getScoutValues(atleta.getScout()));
                         } else {
-                            Helpers.PutSharedPreference(this,chave, "");
+                            Helpers.PutSharedPreference(this, chave, "");
                             Atleta j = new Atleta();
                             j.setNome("Jogador");
                             j.setPosicaoId(posicaoId);
@@ -187,7 +239,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataChild.put(j, textoScoutVazio);
                         }
                     } catch (Exception e) {
-                        Helpers.PutSharedPreference(this,chave, "");
+                        Helpers.PutSharedPreference(this, chave, "");
                         Atleta jog = new Atleta();
                         jog.setNome("Jogador");
                         jog.setPosicaoId(posicaoId);
@@ -195,7 +247,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                         listDataChild.put(jog, textoScoutVazio);
                     }
                 } else {
-                    Helpers.PutSharedPreference(this,chave, "");
+                    Helpers.PutSharedPreference(this, chave, "");
                     Atleta j = new Atleta();
                     j.setNome("Jogador");
                     j.setPosicaoId(posicaoId);
@@ -215,7 +267,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataHeader.add(atleta);
                             listDataChild.put(atleta, getScoutValues(atleta.getScout()));
                         } else {
-                            Helpers.PutSharedPreference(this,chave, "");
+                            Helpers.PutSharedPreference(this, chave, "");
                             Atleta jog = new Atleta();
                             jog.setNome("Jogador");
                             jog.setPosicaoId(posicaoId);
@@ -223,7 +275,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataChild.put(jog, textoScoutVazio);
                         }
                     } catch (Exception e) {
-                        Helpers.PutSharedPreference(this,chave, "");
+                        Helpers.PutSharedPreference(this, chave, "");
                         Atleta jog = new Atleta();
                         jog.setNome("Jogador");
                         jog.setPosicaoId(posicaoId);
@@ -231,7 +283,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                         listDataChild.put(jog, textoScoutVazio);
                     }
                 } else {
-                    Helpers.PutSharedPreference(this,chave, "");
+                    Helpers.PutSharedPreference(this, chave, "");
                     Atleta j = new Atleta();
                     j.setNome("Jogador");
                     j.setPosicaoId(posicaoId);
@@ -251,7 +303,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataHeader.add(atleta);
                             listDataChild.put(atleta, getScoutValues(atleta.getScout()));
                         } else {
-                            Helpers.PutSharedPreference(this,chave, "");
+                            Helpers.PutSharedPreference(this, chave, "");
                             Atleta j = new Atleta();
                             j.setNome("Jogador");
                             j.setPosicaoId(posicaoId);
@@ -259,7 +311,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                             listDataChild.put(j, textoScoutVazio);
                         }
                     } catch (Exception e) {
-                        Helpers.PutSharedPreference(this,chave, "");
+                        Helpers.PutSharedPreference(this, chave, "");
                         Atleta jog = new Atleta();
                         jog.setNome("Jogador");
                         jog.setPosicaoId(posicaoId);
@@ -267,7 +319,7 @@ public class EscalacaoActivity extends AppCompatActivity {
                         listDataChild.put(jog, textoScoutVazio);
                     }
                 } else {
-                    Helpers.PutSharedPreference(this,chave, "");
+                    Helpers.PutSharedPreference(this, chave, "");
                     Atleta j = new Atleta();
                     j.setNome("Jogador");
                     j.setPosicaoId(posicaoId);
@@ -313,88 +365,85 @@ public class EscalacaoActivity extends AppCompatActivity {
 
         }
 
-        // Adding child data
-      /*  List<String> top250 = new ArrayList<String>();
-        top250.add("Gol");
-        top250.add("Assistência");
-        top250.add("Finalização");
-        top250.add("Finalização Defendida");
-        top250.add("Finalização Pra Fora");
-        top250.add("Falta Sofrida");
-
-        listDataChild.put(listDataHeader.get(0), top250);
-        listDataChild.put(listDataHeader.get(1), top250);
-        listDataChild.put(listDataHeader.get(2), top250);
-        listDataChild.put(listDataHeader.get(3), top250);
-        listDataChild.put(listDataHeader.get(4), top250);
-        listDataChild.put(listDataHeader.get(5), top250);
-        listDataChild.put(listDataHeader.get(6), top250);
-        listDataChild.put(listDataHeader.get(7), top250);
-        listDataChild.put(listDataHeader.get(8), top250);
-        listDataChild.put(listDataHeader.get(9), top250);
-        listDataChild.put(listDataHeader.get(10), top250);
-        listDataChild.put(listDataHeader.get(11), top250);*/
     }
 
-    private List<String> getScoutValues(Scout scout){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.escalacao, menu);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveBack();
+    }
+
+    private void moveBack() {
+        finish();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+    }
+
+    private List<String> getScoutValues(Scout scout) {
         List<String> textosScout = new ArrayList<String>();
-        if(scout != null){
-            if(scout.getA() != null){
+        if (scout != null) {
+            if (scout.getA() != null) {
                 textosScout.add("<b>" + scout.getDesA() + ": </b>" + scout.getA());
             }
-            if(scout.getFC() != null){
+            if (scout.getFC() != null) {
                 textosScout.add("<b>" + scout.getDesFC() + ": </b>" + scout.getFC());
             }
-            if(scout.getFD() != null){
+            if (scout.getFD() != null) {
                 textosScout.add("<b>" + scout.getDesFD() + ": </b>" + scout.getFD());
             }
-            if(scout.getFF() != null){
+            if (scout.getFF() != null) {
                 textosScout.add("<b>" + scout.getDesFF() + ": </b>" + scout.getFF());
             }
-            if(scout.getFS() != null){
+            if (scout.getFS() != null) {
                 textosScout.add("<b>" + scout.getDesFS() + ": </b>" + scout.getFS());
             }
-            if(scout.getI() != null){
+            if (scout.getI() != null) {
                 textosScout.add("<b>" + scout.getDesI() + ": </b>" + scout.getI());
             }
-            if(scout.getPE() != null){
+            if (scout.getPE() != null) {
                 textosScout.add("<b>" + scout.getDesPE() + ": </b>" + scout.getPE());
             }
-            if(scout.getRB() != null){
+            if (scout.getRB() != null) {
                 textosScout.add("<b>" + scout.getDesRB() + ": </b>" + scout.getRB());
             }
-            if(scout.getSG() != null){
+            if (scout.getSG() != null) {
                 textosScout.add("<b>" + scout.getDesSG() + ": </b>" + scout.getSG());
             }
-            if(scout.getCA() != null){
+            if (scout.getCA() != null) {
                 textosScout.add("<b>" + scout.getDesCA() + ": </b>" + scout.getCA());
             }
-            if(scout.getFT() != null){
+            if (scout.getFT() != null) {
                 textosScout.add("<b>" + scout.getDesFT() + ":</b> " + scout.getFT());
             }
-            if(scout.getG() != null){
+            if (scout.getG() != null) {
                 textosScout.add("<b>" + scout.getDesG() + ": </b>" + scout.getG());
             }
-            if(scout.getCV() != null){
+            if (scout.getCV() != null) {
                 textosScout.add("<b>" + scout.getDesCV() + ": </b>" + scout.getCV());
             }
-            if(scout.getDD() != null){
+            if (scout.getDD() != null) {
                 textosScout.add("<b>" + scout.getDesDD() + ": </b>" + scout.getDD());
             }
-            if(scout.getGS() != null){
+            if (scout.getGS() != null) {
                 textosScout.add("<b>" + scout.getDesGS() + ": </b>" + scout.getGS());
             }
-            if(scout.getPP() != null){
+            if (scout.getPP() != null) {
                 textosScout.add("<b>" + scout.getDesPP() + ": </b>" + scout.getPP());
             }
-            if(scout.getDP() != null){
+            if (scout.getDP() != null) {
                 textosScout.add("<b>" + scout.getDesDP() + ": </b>" + scout.getDP());
             }
-            if(scout.getGC() != null){
+            if (scout.getGC() != null) {
                 textosScout.add("<b>" + scout.getDesGC() + ": </b>" + scout.getGC());
             }
         }
-        if(textosScout.size() == 0){
+        if (textosScout.size() == 0) {
             textosScout.add("<b>Sem informações para exibir</b>");
         }
         return textosScout;

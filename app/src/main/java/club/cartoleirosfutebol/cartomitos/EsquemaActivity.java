@@ -15,6 +15,8 @@ import club.cartoleirosfutebol.cartomitos.util.Helpers;
 
 public class EsquemaActivity extends AppCompatActivity {
 
+    ImageView imageEsquema;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,39 +26,31 @@ public class EsquemaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        final ImageView imageEsquema = (ImageView) findViewById(R.id.imageEsquema);
+        imageEsquema = (ImageView) findViewById(R.id.imageEsquema);
         MaterialSpinner esquemasSpinner = (MaterialSpinner) findViewById(R.id.spinner);
         final String[] esquemas = getResources().getStringArray(R.array.esquemas);
         esquemasSpinner.setItems(esquemas);
-        Helpers.PutSharedPreference(EsquemaActivity.this,"user_scheme","3-4-3"); // esquema padrão
+        String userScheme = Helpers.GetStringSharedPreference(this, "user_scheme");
+        int indexSelectedEsquema = 0;
+
+        if (userScheme == null || userScheme.equals("")) {
+            Helpers.PutSharedPreference(EsquemaActivity.this, "user_scheme", "3-4-3"); // esquema padrão
+        } else {
+            for (int i = 0; i < esquemas.length; i++) {
+                if (esquemas[i].equals(userScheme)) {
+                    indexSelectedEsquema = i;
+                    break;
+                }
+            }
+            esquemasSpinner.setSelectedIndex(indexSelectedEsquema);
+            updateImageScheme(userScheme);
+        }
 
         esquemasSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
-            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                switch (item) {
-                    case "3-4-3":
-                        imageEsquema.setImageResource(R.drawable.e343);
-                        break;
-                    case "3-5-2":
-                        imageEsquema.setImageResource(R.drawable.e352);
-                        break;
-                    case "4-3-3":
-                        imageEsquema.setImageResource(R.drawable.e433);
-                        break;
-                    case "4-4-2":
-                        imageEsquema.setImageResource(R.drawable.e442);
-                        break;
-                    case "4-5-1":
-                        imageEsquema.setImageResource(R.drawable.e451);
-                        break;
-                    case "5-3-2":
-                        imageEsquema.setImageResource(R.drawable.e532);
-                        break;
-                    case "5-4-1":
-                        imageEsquema.setImageResource(R.drawable.e541);
-                        break;
-                }
-                Helpers.PutSharedPreference(EsquemaActivity.this,"user_scheme",item);
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                updateImageScheme(item);
             }
         });
 
@@ -81,6 +75,33 @@ public class EsquemaActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateImageScheme(String item) {
+        switch (item) {
+            case "3-4-3":
+                imageEsquema.setImageResource(R.drawable.e343);
+                break;
+            case "3-5-2":
+                imageEsquema.setImageResource(R.drawable.e352);
+                break;
+            case "4-3-3":
+                imageEsquema.setImageResource(R.drawable.e433);
+                break;
+            case "4-4-2":
+                imageEsquema.setImageResource(R.drawable.e442);
+                break;
+            case "4-5-1":
+                imageEsquema.setImageResource(R.drawable.e451);
+                break;
+            case "5-3-2":
+                imageEsquema.setImageResource(R.drawable.e532);
+                break;
+            case "5-4-1":
+                imageEsquema.setImageResource(R.drawable.e541);
+                break;
+        }
+        Helpers.PutSharedPreference(EsquemaActivity.this, "user_scheme", item);
     }
 
 
