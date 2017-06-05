@@ -2,6 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_filter_mercado"
+        android:orderInCategory="100"
+        android:title="Filtro"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_sort_mercado"
+        android:orderInCategory="100"
+        android:title="Ordenar"
+        android:icon="@drawable/ic_sort"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_refresh_mercado"
         android:orderInCategory="100"
         android:title="Atualizar"

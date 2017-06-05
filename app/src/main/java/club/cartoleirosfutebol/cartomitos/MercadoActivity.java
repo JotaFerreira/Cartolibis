@@ -12,12 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.orhanobut.dialogplus.DialogPlus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
+import club.cartoleirosfutebol.cartomitos.adapters.OrderMercadoAdapter;
 import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
 import club.cartoleirosfutebol.cartomitos.api.PartidasAPI;
@@ -58,6 +61,9 @@ public class MercadoActivity extends AppCompatActivity {
     PartidaClube _partidas;
     SpotsDialog dialog;
     Intent _intentActivity;
+    ListView _listviewSort;
+    String[] itemsarraySort=new String[]{"Nome","Preço","Média","Valorização","Desvalorização"};
+    OrderMercadoAdapter _sortAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class MercadoActivity extends AppCompatActivity {
         _intentActivity = getIntent();
         _posicao = _intentActivity.getIntExtra("posicao", 0);
         _escalacaoId = _intentActivity.getIntExtra("id", 0);
+        _sortAdapter = new OrderMercadoAdapter(this);
         toolbar.setTitle("Mercado");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,6 +99,18 @@ public class MercadoActivity extends AppCompatActivity {
                 return true;
             case R.id.action_refresh_mercado:
                 fetchData();
+                return true;
+            case R.id.action_sort_mercado:
+                DialogPlus dialog = DialogPlus.newDialog(this)
+                        .setAdapter(adapter)
+                        .setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                            }
+                        })
+                        .setExpanded(true)  // This will enable the expand feature, (similar to android L share dialog)
+                        .create();
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
