@@ -53,6 +53,7 @@ public class Atleta {
     private String urlEscudo;
     private String urlMandante;
     private String urlVisitante;
+    private String nomeClube;
 
     public String getNome() {
         return nome;
@@ -188,6 +189,14 @@ public class Atleta {
 
     public void setUrlVisitante(String urlVisitante) {
         this.urlVisitante = urlVisitante;
+    }
+
+    public String getNomeClube() {
+        return nomeClube;
+    }
+
+    public void setNomeClube(String nomeClube) {
+        this.nomeClube = nomeClube;
     }
 
 }

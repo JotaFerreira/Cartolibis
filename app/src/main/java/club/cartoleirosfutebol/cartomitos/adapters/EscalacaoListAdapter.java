@@ -253,10 +253,10 @@ public class EscalacaoListAdapter extends BaseExpandableListAdapter {
             if (jogador.getVariacaoNum() == 0) {
                 lblValorizacao.setTextColor(Color.BLACK);
             } else if (jogador.getVariacaoNum() > 0) {
-                lblValorizacao.setTextColor(Color.RED);
+                lblValorizacao.setTextColor(Color.GREEN);
                 indicador = "+";
             } else {
-                lblValorizacao.setTextColor(Color.GREEN);
+                lblValorizacao.setTextColor(Color.RED);
             }
             lblValorizacao.setVisibility(View.VISIBLE);
             lblValorizacao.setText("C$: " + indicador + jogador.getVariacaoNum());

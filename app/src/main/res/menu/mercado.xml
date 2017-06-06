@@ -5,18 +5,18 @@
         android:id="@+id/action_filter_mercado"
         android:orderInCategory="100"
         android:title="Filtro"
-        android:icon="@drawable/ic_filter"
+        android:icon="@mipmap/action_filter"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_sort_mercado"
         android:orderInCategory="100"
         android:title="Ordenar"
-        android:icon="@drawable/ic_sort"
+        android:icon="@mipmap/action_sort"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_refresh_mercado"
         android:orderInCategory="100"
         android:title="Atualizar"
-        android:icon="@drawable/ic_refresh"
+        android:icon="@mipmap/action_refresh"
         app:showAsAction="ifRoom" />
 </menu>

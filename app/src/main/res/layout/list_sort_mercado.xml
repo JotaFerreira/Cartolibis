@@ -32,6 +32,13 @@
             android:text="Preço" />
 
         <RadioButton
+            android:id="@+id/radioPontuacao"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Pontuação" />
+
+        <RadioButton
             android:id="@+id/radioMedia"
             style="@style/RadioButton"
             android:layout_width="110dp"

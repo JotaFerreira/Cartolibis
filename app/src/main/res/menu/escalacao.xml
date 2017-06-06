@@ -8,21 +8,21 @@
         android:id="@+id/action_delete"
         android:orderInCategory="200"
         android:title="Deletar Time"
-        android:icon="@drawable/ic_lixeira"
+        android:icon="@mipmap/action_delete"
         app:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/action_esquema"
         android:orderInCategory="200"
         android:title="Esquema"
-        android:icon="@drawable/ic_campo"
+        android:icon="@mipmap/action_stadium"
         app:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/action_confirm"
         android:orderInCategory="200"
         android:title="Confirmar"
-        android:icon="@drawable/ic_confirm"
+        android:icon="@mipmap/action_ok"
         app:showAsAction="ifRoom">
     </item>
 

@@ -105,7 +105,7 @@ public class MercadoActivity extends AppCompatActivity {
                                 View view = v.getRootView();
                                 SegmentedGroup seg = (SegmentedGroup) view.findViewById(R.id.segmentedRadio);
                                 RadioButton radio = (RadioButton) seg.findViewById(seg.getCheckedRadioButtonId());
-                                if(radio != null ){
+                                if (radio != null) {
                                     sortMercadoResults(radio.getText().toString());
                                 }
                                 mMaterialDialog.dismiss();
@@ -174,7 +174,7 @@ public class MercadoActivity extends AppCompatActivity {
                             if (_mercado.getAtletas() != null) {
 
                                 listDataScout = new HashMap<Atleta, List<String>>();
-                                List<Atleta> atletas = new ArrayList<Atleta>();
+                                _atletas = new ArrayList<Atleta>();
 
                                 if (_posicao != 0) {
 
@@ -245,18 +245,11 @@ public class MercadoActivity extends AppCompatActivity {
                                                 textosScout.add("<b>Sem informações para exibir</b>");
                                             }
 
-                                            atletas.add(a);
+                                            _atletas.add(a);
                                             listDataScout.put(a, textosScout);
                                         }
                                     }
-                                    Collections.sort(atletas, new Comparator<Atleta>() {
-                                        @Override
-                                        public int compare(Atleta o1, Atleta o2) {
-                                            return o1.getPrecoNum().compareTo(o2.getPrecoNum());
-                                        }
-                                    });
-                                    _atletas = atletas;
-                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,
+                                    mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletas, listDataScout,
                                             _mercado.getClubes(), _partidas, _escalacaoId);
                                     expListView.setAdapter(mercadoListAdapter);
                                     dialog.dismiss();
@@ -397,10 +390,56 @@ public class MercadoActivity extends AppCompatActivity {
                         }
                     });
                     break;
+                case "pontuação":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o2.getPontosNum().compareTo(o1.getPontosNum());
+                        }
+                    });
+                    break;
             }
             mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletas, listDataScout,
                     _mercado.getClubes(), _partidas, _escalacaoId);
             expListView.setAdapter(mercadoListAdapter);
+        }
+        dialog.dismiss();
+    }
+
+    private void filterByClube(int clubeId) {
+        if (clubeId > 0) {
+            if (_atletas != null) {
+
+                List<Atleta> filterAtletas = new ArrayList<Atleta>();
+
+                for (Atleta a : _atletas) {
+                    if (a.getClubeId().intValue() == clubeId) {
+                        filterAtletas.add(a);
+                    }
+                }
+                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
+                        _mercado.getClubes(), _partidas, _escalacaoId);
+                expListView.setAdapter(mercadoListAdapter);
+            }
+        }
+    }
+
+    private void filterByStatus(int statusId) {
+        dialog.show();
+        if (statusId > 0) {
+            if (_atletas != null) {
+
+                List<Atleta> filterAtletas = new ArrayList<Atleta>();
+
+                for (Atleta a : _atletas) {
+                    if (a.getStatusId().intValue() == statusId) {
+                        filterAtletas.add(a);
+                    }
+                }
+                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
+                        _mercado.getClubes(), _partidas, _escalacaoId);
+                expListView.setAdapter(mercadoListAdapter);
+            }
         }
         dialog.dismiss();
     }
