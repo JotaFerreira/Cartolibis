@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,14 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.orhanobut.dialogplus.DialogPlus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
-import club.cartoleirosfutebol.cartomitos.adapters.OrderMercadoAdapter;
 import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
 import club.cartoleirosfutebol.cartomitos.api.PartidasAPI;
@@ -41,6 +37,8 @@ import club.cartoleirosfutebol.cartomitos.util.Helpers;
 import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
 import dmax.dialog.SpotsDialog;
+import info.hoang8f.android.segmented.SegmentedGroup;
+import me.drakeet.materialdialog.MaterialDialog;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -61,9 +59,7 @@ public class MercadoActivity extends AppCompatActivity {
     PartidaClube _partidas;
     SpotsDialog dialog;
     Intent _intentActivity;
-    ListView _listviewSort;
-    String[] itemsarraySort=new String[]{"Nome","Preço","Média","Valorização","Desvalorização"};
-    OrderMercadoAdapter _sortAdapter;
+    List<Atleta> _atletas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +77,6 @@ public class MercadoActivity extends AppCompatActivity {
         _intentActivity = getIntent();
         _posicao = _intentActivity.getIntExtra("posicao", 0);
         _escalacaoId = _intentActivity.getIntExtra("id", 0);
-        _sortAdapter = new OrderMercadoAdapter(this);
         toolbar.setTitle("Mercado");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,16 +96,31 @@ public class MercadoActivity extends AppCompatActivity {
                 fetchData();
                 return true;
             case R.id.action_sort_mercado:
-                DialogPlus dialog = DialogPlus.newDialog(this)
-                        .setAdapter(adapter)
-                        .setOnItemClickListener(new OnItemClickListener() {
+                final MaterialDialog mMaterialDialog = new MaterialDialog(this);
+                mMaterialDialog.setTitle("Classificar por")
+                        .setCanceledOnTouchOutside(true)
+                        .setPositiveButton("APLICAR", new View.OnClickListener() {
                             @Override
-                            public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                            public void onClick(View v) {
+                                View view = v.getRootView();
+                                SegmentedGroup seg = (SegmentedGroup) view.findViewById(R.id.segmentedRadio);
+                                RadioButton radio = (RadioButton) seg.findViewById(seg.getCheckedRadioButtonId());
+                                if(radio != null ){
+                                    sortMercadoResults(radio.getText().toString());
+                                }
+                                mMaterialDialog.dismiss();
                             }
                         })
-                        .setExpanded(true)  // This will enable the expand feature, (similar to android L share dialog)
-                        .create();
-                dialog.show();
+                        .setContentView(R.layout.list_sort_mercado)
+                        .setNegativeButton("CANCELAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialog.dismiss();
+                            }
+                        });
+
+                mMaterialDialog.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -245,6 +255,7 @@ public class MercadoActivity extends AppCompatActivity {
                                             return o1.getPrecoNum().compareTo(o2.getPrecoNum());
                                         }
                                     });
+                                    _atletas = atletas;
                                     mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, atletas, listDataScout,
                                             _mercado.getClubes(), _partidas, _escalacaoId);
                                     expListView.setAdapter(mercadoListAdapter);
@@ -340,6 +351,58 @@ public class MercadoActivity extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, EscalacaoActivity.class);
         startActivity(intent);
+    }
+
+    private void sortMercadoResults(String item) {
+        dialog.show();
+        if (_atletas != null) {
+            switch (item.toLowerCase()) {
+                case "nome":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o1.getApelido().compareTo(o2.getApelido());
+                        }
+                    });
+                    break;
+                case "preço":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o2.getPrecoNum().compareTo(o1.getPrecoNum());
+                        }
+                    });
+                    break;
+                case "média":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o2.getMediaNum().compareTo(o1.getMediaNum());
+                        }
+                    });
+                    break;
+                case "valorização":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o2.getVariacaoNum().compareTo(o1.getVariacaoNum());
+                        }
+                    });
+                    break;
+                case "desvalorização":
+                    Collections.sort(_atletas, new Comparator<Atleta>() {
+                        @Override
+                        public int compare(Atleta o1, Atleta o2) {
+                            return o1.getVariacaoNum().compareTo(o2.getVariacaoNum());
+                        }
+                    });
+                    break;
+            }
+            mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletas, listDataScout,
+                    _mercado.getClubes(), _partidas, _escalacaoId);
+            expListView.setAdapter(mercadoListAdapter);
+        }
+        dialog.dismiss();
     }
 
 }

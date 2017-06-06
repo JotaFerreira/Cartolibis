@@ -2,10 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listViewSortMercado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/segmentedRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        segmentedgroup:sc_tint_color="@color/colorPrimary"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="10dp">
+
+        <RadioButton
+            android:id="@+id/radioNome"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Nome" />
+
+        <RadioButton
+            android:id="@+id/radioPreco"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Preço" />
+
+        <RadioButton
+            android:id="@+id/radioMedia"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Média" />
+
+        <RadioButton
+            android:id="@+id/radioValorizacao"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Valorização" />
+
+        <RadioButton
+            android:id="@+id/radioDesvalorizacao"
+            style="@style/RadioButton"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Desvalorização" />
+
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
 </LinearLayout>
