@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Status {
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -17,6 +18,15 @@ public class Status {
     @SerializedName("slug")
     @Expose
     private String slug;
+
+    public Status() {
+
+    }
+
+    public Status(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 
     public Integer getId() {
         return id;

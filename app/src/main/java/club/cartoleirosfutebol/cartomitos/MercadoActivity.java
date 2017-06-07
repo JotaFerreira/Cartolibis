@@ -10,14 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,10 +34,12 @@ import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
 import club.cartoleirosfutebol.cartomitos.api.AtletasAPI;
 import club.cartoleirosfutebol.cartomitos.api.PartidasAPI;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
+import club.cartoleirosfutebol.cartomitos.data.Clube;
 import club.cartoleirosfutebol.cartomitos.data.Mercado;
 import club.cartoleirosfutebol.cartomitos.data.Partida;
 import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.data.Scout;
+import club.cartoleirosfutebol.cartomitos.data.Status;
 import club.cartoleirosfutebol.cartomitos.util.Helpers;
 import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
@@ -111,6 +118,7 @@ public class MercadoActivity extends AppCompatActivity {
                                 mMaterialDialog.dismiss();
                             }
                         })
+
                         .setContentView(R.layout.list_sort_mercado)
                         .setNegativeButton("CANCELAR", new View.OnClickListener() {
                             @Override
@@ -121,6 +129,60 @@ public class MercadoActivity extends AppCompatActivity {
 
                 mMaterialDialog.show();
 
+                return true;
+            case R.id.action_filter_mercado:
+                LinearLayout layout = new LinearLayout(this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                MaterialSpinner spinnerStatus = new MaterialSpinner(this);
+
+                String statusJson = getResources().getString(R.string.status_json);
+                Type listStatusType = new TypeToken<ArrayList<Status>>() {
+                }.getType();
+                List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
+
+                List<String> statusValues = new ArrayList<>();
+
+                for (Status s : statusList) {
+                    statusValues.add(s.getNome());
+                }
+
+                spinnerStatus.setItems(statusValues);
+
+                MaterialSpinner spinnerClubes = new MaterialSpinner(this);
+
+                List<String> clubesValues = new ArrayList<>();
+
+                for (Clube c : _mercado.getClubes().values()) {
+                    clubesValues.add(c.getNome());
+                }
+
+                spinnerClubes.setItems(clubesValues);
+
+                spinnerStatus.setText("Status");
+                spinnerClubes.setText("Clubes");
+
+                layout.addView(spinnerStatus);
+                layout.addView(spinnerClubes);
+
+                final MaterialDialog mMaterialDialogFilter = new MaterialDialog(this);
+                mMaterialDialogFilter.setTitle("Filtrar por")
+                        .setCanceledOnTouchOutside(true)
+                        .setPositiveButton("APLICAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                View view = v.getRootView();
+                            }
+                        })
+                        .setView(layout)
+                        .setNegativeButton("CANCELAR", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialogFilter.dismiss();
+                            }
+                        });
+
+                mMaterialDialogFilter.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
