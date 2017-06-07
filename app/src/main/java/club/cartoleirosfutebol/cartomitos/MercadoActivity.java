@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,8 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import club.cartoleirosfutebol.cartomitos.adapters.MercadoListAdapter;
 import club.cartoleirosfutebol.cartomitos.api.APIConstraints;
@@ -45,7 +50,7 @@ import club.cartoleirosfutebol.cartomitos.util.MercadoDeserializer;
 import club.cartoleirosfutebol.cartomitos.util.PartidasDeserializer;
 import dmax.dialog.SpotsDialog;
 import info.hoang8f.android.segmented.SegmentedGroup;
-import me.drakeet.materialdialog.MaterialDialog;
+//import me.drakeet.materialdialog.MaterialDialog;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -67,6 +72,7 @@ public class MercadoActivity extends AppCompatActivity {
     SpotsDialog dialog;
     Intent _intentActivity;
     List<Atleta> _atletas;
+    List<Atleta> _atletasTodos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,46 +108,43 @@ public class MercadoActivity extends AppCompatActivity {
             case R.id.action_refresh_mercado:
                 fetchData();
                 return true;
+
             case R.id.action_sort_mercado:
-                final MaterialDialog mMaterialDialog = new MaterialDialog(this);
-                mMaterialDialog.setTitle("Classificar por")
-                        .setCanceledOnTouchOutside(true)
-                        .setPositiveButton("APLICAR", new View.OnClickListener() {
+                new MaterialDialog.Builder(this)
+                        .title("Classificar Por")
+                        .customView(R.layout.list_sort_mercado, false)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(View v) {
-                                View view = v.getRootView();
-                                SegmentedGroup seg = (SegmentedGroup) view.findViewById(R.id.segmentedRadio);
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                SegmentedGroup seg = (SegmentedGroup) dialog.findViewById(R.id.segmentedRadio);
                                 RadioButton radio = (RadioButton) seg.findViewById(seg.getCheckedRadioButtonId());
                                 if (radio != null) {
                                     sortMercadoResults(radio.getText().toString());
                                 }
-                                mMaterialDialog.dismiss();
+                                dialog.dismiss();
                             }
                         })
-
-                        .setContentView(R.layout.list_sort_mercado)
-                        .setNegativeButton("CANCELAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mMaterialDialog.dismiss();
-                            }
-                        });
-
-                mMaterialDialog.show();
-
+                        .positiveText("APLICAR")
+                        .negativeText("CANCELAR")
+                        .show();
                 return true;
+
             case R.id.action_filter_mercado:
+
                 LinearLayout layout = new LinearLayout(this);
                 layout.setOrientation(LinearLayout.VERTICAL);
+                final String labelTodosClubes = "Todos os Clubes";
+                final String labelTodosStatus = "Todos os Status";
 
-                MaterialSpinner spinnerStatus = new MaterialSpinner(this);
+                final MaterialSpinner spinnerStatus = new MaterialSpinner(this);
 
                 String statusJson = getResources().getString(R.string.status_json);
-                Type listStatusType = new TypeToken<ArrayList<Status>>() {
+                final Type listStatusType = new TypeToken<ArrayList<Status>>() {
                 }.getType();
-                List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
+                final List<Status> statusList = new Gson().fromJson(statusJson, listStatusType);
 
-                List<String> statusValues = new ArrayList<>();
+                final List<String> statusValues = new ArrayList<>();
+                statusValues.add(labelTodosStatus);
 
                 for (Status s : statusList) {
                     statusValues.add(s.getNome());
@@ -149,9 +152,10 @@ public class MercadoActivity extends AppCompatActivity {
 
                 spinnerStatus.setItems(statusValues);
 
-                MaterialSpinner spinnerClubes = new MaterialSpinner(this);
+                final MaterialSpinner spinnerClubes = new MaterialSpinner(this);
 
-                List<String> clubesValues = new ArrayList<>();
+                final List<String> clubesValues = new ArrayList<>();
+                clubesValues.add(labelTodosClubes);
 
                 for (Clube c : _mercado.getClubes().values()) {
                     clubesValues.add(c.getNome());
@@ -159,30 +163,46 @@ public class MercadoActivity extends AppCompatActivity {
 
                 spinnerClubes.setItems(clubesValues);
 
-                spinnerStatus.setText("Status");
-                spinnerClubes.setText("Clubes");
-
                 layout.addView(spinnerStatus);
                 layout.addView(spinnerClubes);
 
-                final MaterialDialog mMaterialDialogFilter = new MaterialDialog(this);
-                mMaterialDialogFilter.setTitle("Filtrar por")
-                        .setCanceledOnTouchOutside(true)
-                        .setPositiveButton("APLICAR", new View.OnClickListener() {
+                new MaterialDialog.Builder(this)
+                        .title("Filtrar Por")
+                        .customView(layout, false)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(View v) {
-                                View view = v.getRootView();
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                String statusNome = statusValues.get(spinnerStatus.getSelectedIndex());
+                                String clubeNome = clubesValues.get(spinnerClubes.getSelectedIndex());
+                                int idStatus = 0;
+                                int idClube = 0;
+
+                                if (!statusNome.equals(labelTodosStatus)) {
+                                    for (Status s : statusList) {
+                                        if (s.getNome().equals(statusNome)) {
+                                            idStatus = s.getId();
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!clubeNome.equals(labelTodosClubes)) {
+                                    for (Clube c : _mercado.getClubes().values()) {
+                                        if (c.getNome().equals(clubeNome)) {
+                                            idClube = c.getId();
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                filterMercadoResults(idClube, idStatus);
+
                             }
                         })
-                        .setView(layout)
-                        .setNegativeButton("CANCELAR", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mMaterialDialogFilter.dismiss();
-                            }
-                        });
+                        .positiveText("APLICAR")
+                        .negativeText("CANCELAR")
+                        .show();
 
-                mMaterialDialogFilter.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -200,6 +220,8 @@ public class MercadoActivity extends AppCompatActivity {
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
 
         Gson gsonMercado = new GsonBuilder().registerTypeAdapter(Mercado.class, new MercadoDeserializer()).create();
@@ -237,6 +259,7 @@ public class MercadoActivity extends AppCompatActivity {
 
                                 listDataScout = new HashMap<Atleta, List<String>>();
                                 _atletas = new ArrayList<Atleta>();
+                                _atletasTodos = _mercado.getAtletas();
 
                                 if (_posicao != 0) {
 
@@ -468,42 +491,43 @@ public class MercadoActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
-    private void filterByClube(int clubeId) {
-        if (clubeId > 0) {
-            if (_atletas != null) {
+    private void filterMercadoResults(int clubeId, int statusId) {
+        Log.i("filterMercadoResults", clubeId + "-" + statusId);
+        if (_atletasTodos != null) {
 
-                List<Atleta> filterAtletas = new ArrayList<Atleta>();
+            List<Atleta> filterAtletas = new ArrayList<Atleta>();
 
-                for (Atleta a : _atletas) {
-                    if (a.getClubeId().intValue() == clubeId) {
+            for (Atleta a : _atletasTodos) {
+
+                if (clubeId > 0 && statusId > 0) {
+                    if (a.getClubeId().intValue() == clubeId && a.getStatusId() == statusId) { // se um clube especifico e um status especifico
                         filterAtletas.add(a);
                     }
+                } else if (clubeId == 0 && statusId > 0) { // se todos os clubes e status especifico
+                    if (a.getStatusId() == statusId) {
+                        filterAtletas.add(a);
+                    }
+                } else if (clubeId > 0 && statusId == 0) {
+                    if (a.getClubeId().intValue() == clubeId) { // se todos os status e um clube especifico
+                        filterAtletas.add(a);
+                    }
+                } else {
+                    carregarMercadoCompleto();
+                    return;
                 }
-                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
-                        _mercado.getClubes(), _partidas, _escalacaoId);
-                expListView.setAdapter(mercadoListAdapter);
             }
+            mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
+                    _mercado.getClubes(), _partidas, _escalacaoId);
+            expListView.setAdapter(mercadoListAdapter);
         }
+
     }
 
-    private void filterByStatus(int statusId) {
-        dialog.show();
-        if (statusId > 0) {
-            if (_atletas != null) {
-
-                List<Atleta> filterAtletas = new ArrayList<Atleta>();
-
-                for (Atleta a : _atletas) {
-                    if (a.getStatusId().intValue() == statusId) {
-                        filterAtletas.add(a);
-                    }
-                }
-                mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
-                        _mercado.getClubes(), _partidas, _escalacaoId);
-                expListView.setAdapter(mercadoListAdapter);
-            }
-        }
-        dialog.dismiss();
+    private void carregarMercadoCompleto() {
+        Log.i("MERCADO:","DefaultCarregado");
+        mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletasTodos, listDataScout,
+                _mercado.getClubes(), _partidas, _escalacaoId);
+        expListView.setAdapter(mercadoListAdapter);
     }
 
 }
