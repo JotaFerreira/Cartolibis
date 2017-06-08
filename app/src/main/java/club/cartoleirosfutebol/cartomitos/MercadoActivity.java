@@ -1,5 +1,6 @@
 package club.cartoleirosfutebol.cartomitos;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -153,6 +155,9 @@ public class MercadoActivity extends AppCompatActivity {
                 spinnerStatus.setItems(statusValues);
 
                 final MaterialSpinner spinnerClubes = new MaterialSpinner(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(5,20,5,200);
+                spinnerClubes.setLayoutParams(params);
 
                 final List<String> clubesValues = new ArrayList<>();
                 clubesValues.add(labelTodosClubes);
@@ -259,7 +264,7 @@ public class MercadoActivity extends AppCompatActivity {
 
                                 listDataScout = new HashMap<Atleta, List<String>>();
                                 _atletas = new ArrayList<Atleta>();
-                                _atletasTodos = _mercado.getAtletas();
+                                _atletasTodos = new ArrayList<Atleta>();
 
                                 if (_posicao != 0) {
 
@@ -267,71 +272,75 @@ public class MercadoActivity extends AppCompatActivity {
                                         HashMap<Atleta, List<String>> scoutsAtleta = new HashMap<Atleta, List<String>>();
                                         List<String> textosScout = new ArrayList<String>();
 
-                                        if (a.getPosicaoId() == _posicao && (a.getStatusId() == 7 || a.getStatusId() == 2)) {
-                                            Scout scout = a.getScout();
-                                            if (scout != null) {
-                                                if (scout.getA() != null) {
-                                                    textosScout.add("<b>" + scout.getDesA() + ": </b>" + scout.getA());
-                                                }
-                                                if (scout.getFC() != null) {
-                                                    textosScout.add("<b>" + scout.getDesFC() + ": </b>" + scout.getFC());
-                                                }
-                                                if (scout.getFD() != null) {
-                                                    textosScout.add("<b>" + scout.getDesFD() + ": </b>" + scout.getFD());
-                                                }
-                                                if (scout.getFF() != null) {
-                                                    textosScout.add("<b>" + scout.getDesFF() + ": </b>" + scout.getFF());
-                                                }
-                                                if (scout.getFS() != null) {
-                                                    textosScout.add("<b>" + scout.getDesFS() + ": </b>" + scout.getFS());
-                                                }
-                                                if (scout.getI() != null) {
-                                                    textosScout.add("<b>" + scout.getDesI() + ": </b>" + scout.getI());
-                                                }
-                                                if (scout.getPE() != null) {
-                                                    textosScout.add("<b>" + scout.getDesPE() + ": </b>" + scout.getPE());
-                                                }
-                                                if (scout.getRB() != null) {
-                                                    textosScout.add("<b>" + scout.getDesRB() + ": </b>" + scout.getRB());
-                                                }
-                                                if (scout.getSG() != null) {
-                                                    textosScout.add("<b>" + scout.getDesSG() + ": </b>" + scout.getSG());
-                                                }
-                                                if (scout.getCA() != null) {
-                                                    textosScout.add("<b>" + scout.getDesCA() + ": </b>" + scout.getCA());
-                                                }
-                                                if (scout.getFT() != null) {
-                                                    textosScout.add("<b>" + scout.getDesFT() + ":</b> " + scout.getFT());
-                                                }
-                                                if (scout.getG() != null) {
-                                                    textosScout.add("<b>" + scout.getDesG() + ": </b>" + scout.getG());
-                                                }
-                                                if (scout.getCV() != null) {
-                                                    textosScout.add("<b>" + scout.getDesCV() + ": </b>" + scout.getCV());
-                                                }
-                                                if (scout.getDD() != null) {
-                                                    textosScout.add("<b>" + scout.getDesDD() + ": </b>" + scout.getDD());
-                                                }
-                                                if (scout.getGS() != null) {
-                                                    textosScout.add("<b>" + scout.getDesGS() + ": </b>" + scout.getGS());
-                                                }
-                                                if (scout.getPP() != null) {
-                                                    textosScout.add("<b>" + scout.getDesPP() + ": </b>" + scout.getPP());
-                                                }
-                                                if (scout.getDP() != null) {
-                                                    textosScout.add("<b>" + scout.getDesDP() + ": </b>" + scout.getDP());
-                                                }
-                                                if (scout.getGC() != null) {
-                                                    textosScout.add("<b>" + scout.getDesGC() + ": </b>" + scout.getGC());
-                                                }
-                                            }
+                                        if (a.getPosicaoId() == _posicao) {
+                                            _atletasTodos.add(a);
+                                            if (a.getStatusId() == 7 || a.getStatusId() == 2) {
 
-                                            if (textosScout.size() == 0) {
-                                                textosScout.add("<b>Sem informações para exibir</b>");
-                                            }
+                                                Scout scout = a.getScout();
+                                                if (scout != null) {
+                                                    if (scout.getA() != null) {
+                                                        textosScout.add("<b>" + scout.getDesA() + ": </b>" + scout.getA());
+                                                    }
+                                                    if (scout.getFC() != null) {
+                                                        textosScout.add("<b>" + scout.getDesFC() + ": </b>" + scout.getFC());
+                                                    }
+                                                    if (scout.getFD() != null) {
+                                                        textosScout.add("<b>" + scout.getDesFD() + ": </b>" + scout.getFD());
+                                                    }
+                                                    if (scout.getFF() != null) {
+                                                        textosScout.add("<b>" + scout.getDesFF() + ": </b>" + scout.getFF());
+                                                    }
+                                                    if (scout.getFS() != null) {
+                                                        textosScout.add("<b>" + scout.getDesFS() + ": </b>" + scout.getFS());
+                                                    }
+                                                    if (scout.getI() != null) {
+                                                        textosScout.add("<b>" + scout.getDesI() + ": </b>" + scout.getI());
+                                                    }
+                                                    if (scout.getPE() != null) {
+                                                        textosScout.add("<b>" + scout.getDesPE() + ": </b>" + scout.getPE());
+                                                    }
+                                                    if (scout.getRB() != null) {
+                                                        textosScout.add("<b>" + scout.getDesRB() + ": </b>" + scout.getRB());
+                                                    }
+                                                    if (scout.getSG() != null) {
+                                                        textosScout.add("<b>" + scout.getDesSG() + ": </b>" + scout.getSG());
+                                                    }
+                                                    if (scout.getCA() != null) {
+                                                        textosScout.add("<b>" + scout.getDesCA() + ": </b>" + scout.getCA());
+                                                    }
+                                                    if (scout.getFT() != null) {
+                                                        textosScout.add("<b>" + scout.getDesFT() + ":</b> " + scout.getFT());
+                                                    }
+                                                    if (scout.getG() != null) {
+                                                        textosScout.add("<b>" + scout.getDesG() + ": </b>" + scout.getG());
+                                                    }
+                                                    if (scout.getCV() != null) {
+                                                        textosScout.add("<b>" + scout.getDesCV() + ": </b>" + scout.getCV());
+                                                    }
+                                                    if (scout.getDD() != null) {
+                                                        textosScout.add("<b>" + scout.getDesDD() + ": </b>" + scout.getDD());
+                                                    }
+                                                    if (scout.getGS() != null) {
+                                                        textosScout.add("<b>" + scout.getDesGS() + ": </b>" + scout.getGS());
+                                                    }
+                                                    if (scout.getPP() != null) {
+                                                        textosScout.add("<b>" + scout.getDesPP() + ": </b>" + scout.getPP());
+                                                    }
+                                                    if (scout.getDP() != null) {
+                                                        textosScout.add("<b>" + scout.getDesDP() + ": </b>" + scout.getDP());
+                                                    }
+                                                    if (scout.getGC() != null) {
+                                                        textosScout.add("<b>" + scout.getDesGC() + ": </b>" + scout.getGC());
+                                                    }
+                                                }
 
-                                            _atletas.add(a);
-                                            listDataScout.put(a, textosScout);
+                                                if (textosScout.size() == 0) {
+                                                    textosScout.add("<b>Sem informações para exibir</b>");
+                                                }
+
+                                                _atletas.add(a);
+                                                listDataScout.put(a, textosScout);
+                                            }
                                         }
                                     }
                                     mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletas, listDataScout,
@@ -487,12 +496,13 @@ public class MercadoActivity extends AppCompatActivity {
             mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletas, listDataScout,
                     _mercado.getClubes(), _partidas, _escalacaoId);
             expListView.setAdapter(mercadoListAdapter);
+
         }
         dialog.dismiss();
     }
 
     private void filterMercadoResults(int clubeId, int statusId) {
-        Log.i("filterMercadoResults", clubeId + "-" + statusId);
+
         if (_atletasTodos != null) {
 
             List<Atleta> filterAtletas = new ArrayList<Atleta>();
@@ -516,6 +526,7 @@ public class MercadoActivity extends AppCompatActivity {
                     return;
                 }
             }
+            _atletas = filterAtletas;
             mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, filterAtletas, listDataScout,
                     _mercado.getClubes(), _partidas, _escalacaoId);
             expListView.setAdapter(mercadoListAdapter);
@@ -524,7 +535,7 @@ public class MercadoActivity extends AppCompatActivity {
     }
 
     private void carregarMercadoCompleto() {
-        Log.i("MERCADO:","DefaultCarregado");
+        _atletas = _atletasTodos;
         mercadoListAdapter = new MercadoListAdapter(MercadoActivity.this, _atletasTodos, listDataScout,
                 _mercado.getClubes(), _partidas, _escalacaoId);
         expListView.setAdapter(mercadoListAdapter);
