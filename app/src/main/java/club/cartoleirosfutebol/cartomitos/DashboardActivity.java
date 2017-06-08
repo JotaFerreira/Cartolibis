@@ -149,8 +149,8 @@ public class DashboardActivity extends AppCompatActivity
             Intent intent = new Intent(this, EsquemaActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-
-
+            Intent intent = new Intent(this, LineUpActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_share) {

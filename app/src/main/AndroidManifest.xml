@@ -30,14 +30,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EscalacaoActivity"
-            android:label="@string/title_activity_escalacao"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_escalacao"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MercadoActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_mercado"
             android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LineUpActivity"
+            android:label="@string/title_activity_line_up"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
