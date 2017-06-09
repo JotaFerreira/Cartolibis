@@ -17,5 +17,7 @@
     <dimen name="feed_item_corner_radius">3dp</dimen>
     <dimen name="feed_item_border_width">1dp</dimen>
     <dimen name="db_estatisticas_font">10dp</dimen>
-    <dimen name="margin_jog_lineup">10dp</dimen>
+    <dimen name="margin_jog_lineup">15dp</dimen>
+    <dimen name="margin_layout_lineup_ata">55dp</dimen>
+    <dimen name="margin_layout_lineup_def">75dp</dimen>
 </resources>

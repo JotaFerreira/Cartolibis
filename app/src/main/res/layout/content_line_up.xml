@@ -9,34 +9,29 @@
     tools:context="club.cartoleirosfutebol.cartomitos.LineUpActivity"
     tools:showIn="@layout/activity_line_up">
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="5"
-        android:rowCount="4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="@dimen/margin_layout_lineup_ata"
+            android:layout_gravity="top"
             android:gravity="center">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ata1"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
-                    android:layout_column="2"
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
                     android:layout_marginTop="@dimen/margin_jog_lineup"
-                    android:layout_row="0"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -50,17 +45,16 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ata2"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
-                    android:layout_column="3"
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
                     android:layout_marginTop="@dimen/margin_jog_lineup"
-                    android:layout_row="0"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -74,17 +68,16 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ata3"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
-                    android:layout_column="4"
+                    android:layout_marginTop="@dimen/margin_jog_lineup"
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
-                    android:layout_marginTop="@dimen/margin_jog_lineup"
-                    android:layout_row="0"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -97,30 +90,26 @@
 
         </LinearLayout>
 
-    </GridLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical">
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical|center"
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/mei1"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:layout_column="2"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-                android:layout_marginTop="@dimen/margin_jog_lineup"
-                android:layout_row="1"
+
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -134,16 +123,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/mei2"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:layout_column="3"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-                android:layout_marginTop="@dimen/margin_jog_lineup"
                 android:layout_row="1"
                 android:src="@drawable/ic_escudo" />
 
@@ -158,17 +147,17 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/mei3"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:layout_column="4"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
                 android:layout_marginTop="@dimen/margin_jog_lineup"
-                android:layout_row="1"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -176,6 +165,242 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mei4"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmMei4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meia"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mei5"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmMei5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meia"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_layout_lineup_def"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/lat1"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmLat1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lateral"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/zag1"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:layout_row="1"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmZag1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zagueiro"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/zag2"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmZag2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zagueiro"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/zag3"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmZag3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zagueiro"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/lat2"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmLat2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lateral"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/gol1"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:layout_row="1"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmGo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Goleiro"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center|left"
+        android:layout_gravity="bottom|left">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/tec1"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginLeft="@dimen/margin_jog_lineup"
+                android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:layout_row="1"
+                android:src="@drawable/ic_escudo" />
+
+            <TextView
+                android:id="@+id/nmTec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Técnico"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
