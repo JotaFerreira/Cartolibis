@@ -19,5 +19,5 @@
     <dimen name="db_estatisticas_font">10dp</dimen>
     <dimen name="margin_jog_lineup">15dp</dimen>
     <dimen name="margin_layout_lineup_ata">55dp</dimen>
-    <dimen name="margin_layout_lineup_def">75dp</dimen>
+    <dimen name="margin_layout_lineup_def">95dp</dimen>
 </resources>

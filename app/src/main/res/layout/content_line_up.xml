@@ -32,6 +32,7 @@
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
                     android:layout_marginTop="@dimen/margin_jog_lineup"
+                    android:visibility="invisible"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -39,6 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Atacante"
+                    android:visibility="invisible"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -55,6 +57,7 @@
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
                     android:layout_marginTop="@dimen/margin_jog_lineup"
+                    android:visibility="invisible"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -62,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Atacante"
+                    android:visibility="invisible"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -78,6 +82,7 @@
                     android:layout_marginTop="@dimen/margin_jog_lineup"
                     android:layout_marginLeft="@dimen/margin_jog_lineup"
                     android:layout_marginRight="@dimen/margin_jog_lineup"
+                    android:visibility="invisible"
                     android:src="@drawable/ic_escudo" />
 
                 <TextView
@@ -85,6 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Atacante"
+                    android:visibility="invisible"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -109,7 +115,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -117,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -133,7 +140,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-                android:layout_row="1"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -141,6 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -158,6 +166,7 @@
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
                 android:layout_marginTop="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -165,6 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -181,6 +191,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -188,6 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -204,6 +216,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -211,6 +224,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meia"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -236,7 +250,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -244,6 +258,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lateral"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -260,7 +275,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-                android:layout_row="1"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -268,6 +283,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -284,6 +300,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -291,6 +308,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -307,6 +325,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -314,6 +333,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -330,6 +350,7 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
+                android:visibility="invisible"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
@@ -337,6 +358,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lateral"
+                android:visibility="invisible"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -361,7 +383,6 @@
                 android:layout_height="40dip"
                 android:layout_marginLeft="@dimen/margin_jog_lineup"
                 android:layout_marginRight="@dimen/margin_jog_lineup"
-                android:layout_row="1"
                 android:src="@drawable/ic_escudo" />
 
             <TextView
