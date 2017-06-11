@@ -5,25 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".EscalacaoActivity">
     <item
+        android:id="@+id/action_lineup"
+        android:orderInCategory="200"
+        android:title="Meu Time"
+        android:icon="@mipmap/action_stadium"
+        app:showAsAction="always">
+    </item>
+    <item
         android:id="@+id/action_delete"
         android:orderInCategory="200"
         android:title="Deletar Time"
         android:icon="@mipmap/action_delete"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
     </item>
     <item
         android:id="@+id/action_esquema"
         android:orderInCategory="200"
         android:title="Esquema"
-        android:icon="@mipmap/action_stadium"
-        app:showAsAction="ifRoom">
+        android:icon="@mipmap/action_scheme"
+        app:showAsAction="always">
     </item>
     <item
         android:id="@+id/action_confirm"
         android:orderInCategory="200"
         android:title="Confirmar"
         android:icon="@mipmap/action_ok"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
     </item>
 
 </menu>

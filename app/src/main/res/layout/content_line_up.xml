@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="Atacante"
                     android:visibility="invisible"
+                    android:textSize="@dimen/textsize_playernames"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -66,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="Atacante"
                     android:visibility="invisible"
+                    android:textSize="@dimen/textsize_playernames"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -91,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="Atacante"
                     android:visibility="invisible"
+                    android:textSize="@dimen/textsize_playernames"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
@@ -124,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meia"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -149,6 +153,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meia"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -175,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meia"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -200,6 +206,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meia"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -225,6 +232,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meia"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -259,6 +267,7 @@
                 android:layout_height="wrap_content"
                 android:text="Lateral"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -284,6 +293,7 @@
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -309,6 +319,7 @@
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -334,6 +345,7 @@
                 android:layout_height="wrap_content"
                 android:text="Zagueiro"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -359,6 +371,7 @@
                 android:layout_height="wrap_content"
                 android:text="Lateral"
                 android:visibility="invisible"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -390,6 +403,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Goleiro"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -422,6 +436,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Técnico"
+                android:textSize="@dimen/textsize_playernames"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 

@@ -42,7 +42,7 @@
         <activity
             android:name=".LineUpActivity"
             android:label="@string/title_activity_line_up"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/CloseButtonActivity"></activity>
     </application>
 
 </manifest>

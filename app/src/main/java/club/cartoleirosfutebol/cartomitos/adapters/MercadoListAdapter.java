@@ -2,10 +2,8 @@ package club.cartoleirosfutebol.cartomitos.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -26,16 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import club.cartoleirosfutebol.cartomitos.EscalacaoActivity;
-import club.cartoleirosfutebol.cartomitos.MercadoActivity;
 import club.cartoleirosfutebol.cartomitos.R;
 import club.cartoleirosfutebol.cartomitos.data.Atleta;
 import club.cartoleirosfutebol.cartomitos.data.Clube;
-import club.cartoleirosfutebol.cartomitos.data.Esquema;
-import club.cartoleirosfutebol.cartomitos.data.JogadorItem;
+import club.cartoleirosfutebol.cartomitos.data.Const;
 import club.cartoleirosfutebol.cartomitos.data.Partida;
 import club.cartoleirosfutebol.cartomitos.data.PartidaClube;
 import club.cartoleirosfutebol.cartomitos.data.Posicao;
-import club.cartoleirosfutebol.cartomitos.data.PosicaoEsquema;
 import club.cartoleirosfutebol.cartomitos.data.Status;
 import club.cartoleirosfutebol.cartomitos.util.Helpers;
 
@@ -197,8 +191,7 @@ public class MercadoListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     String jsonJogador = new Gson().toJson(jogador);
-                    Helpers.PutSharedPreference(_context, "j" + escalacaoId + "_" + jogador.getPosicaoId(), jsonJogador);
-                    Log.i("BTNJOGADOR:","j" + escalacaoId + "_" + jogador.getPosicaoId());
+                    Helpers.putSharedPreference(_context, Const.prefixKeyEscalacao + escalacaoId + "_" + jogador.getPosicaoId(), jsonJogador);
                     Intent intent = new Intent(_context, EscalacaoActivity.class);
                     _context.startActivity(intent);
                 }

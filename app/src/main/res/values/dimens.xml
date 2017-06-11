@@ -18,6 +18,7 @@
     <dimen name="feed_item_border_width">1dp</dimen>
     <dimen name="db_estatisticas_font">10dp</dimen>
     <dimen name="margin_jog_lineup">15dp</dimen>
-    <dimen name="margin_layout_lineup_ata">55dp</dimen>
+    <dimen name="margin_layout_lineup_ata">75dp</dimen>
     <dimen name="margin_layout_lineup_def">95dp</dimen>
+    <dimen name="textsize_playernames">10dp</dimen>
 </resources>

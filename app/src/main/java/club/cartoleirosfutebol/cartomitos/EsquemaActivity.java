@@ -30,11 +30,11 @@ public class EsquemaActivity extends AppCompatActivity {
         MaterialSpinner esquemasSpinner = (MaterialSpinner) findViewById(R.id.spinner);
         final String[] esquemas = getResources().getStringArray(R.array.esquemas);
         esquemasSpinner.setItems(esquemas);
-        String userScheme = Helpers.GetStringSharedPreference(this, "user_scheme");
+        String userScheme = Helpers.getStringSharedPreference(this, "user_scheme");
         int indexSelectedEsquema = 0;
 
         if (userScheme == null || userScheme.equals("")) {
-            Helpers.PutSharedPreference(EsquemaActivity.this, "user_scheme", "3-4-3"); // esquema padrão
+            Helpers.putSharedPreference(EsquemaActivity.this, "user_scheme", "3-4-3"); // esquema padrão
         } else {
             for (int i = 0; i < esquemas.length; i++) {
                 if (esquemas[i].equals(userScheme)) {
@@ -101,7 +101,7 @@ public class EsquemaActivity extends AppCompatActivity {
                 imageEsquema.setImageResource(R.drawable.e541);
                 break;
         }
-        Helpers.PutSharedPreference(EsquemaActivity.this, "user_scheme", item);
+        Helpers.putSharedPreference(EsquemaActivity.this, "user_scheme", item);
     }
 
 
